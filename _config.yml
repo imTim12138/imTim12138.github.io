@@ -8,11 +8,12 @@ description:
 
 # Your information
 email: hjltim@icloud.com
+#用chrome处理邮件发送 href="mailto:{{ site.email }}"
 author: 圆餠君
 avatar: "/images/susu.png"
 profile: 一只学电的程序餠子.
 
-#twitter_username: twitter_username
+weibo_username: toycc2h
 github_username:  imtim12138
 
 # Comment Service (Disqus or 多说)
