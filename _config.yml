@@ -21,7 +21,7 @@ github_username:  imtim12138
 #disqus_shortname: xxx   # get one: https://disqus.com/admin/signup/
 duoshuo_shortname: imtim12138  # get one: http://duoshuo.com/create-site/
 
-permalink: /archivers/:title
+permalink: date
 gems:
  - jekyll-paginate
  - jekyll-gist
