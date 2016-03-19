@@ -13,12 +13,12 @@ avatar: "/images/susu.png"
 profile: 一只学电的程序餠子.
 
 #twitter_username: twitter_username
-github_username:  github_username
+github_username:  imtim12138
 
 # Comment Service (Disqus or 多说)
 #  choose one and un-comment the line to active it
 #disqus_shortname: xxx   # get one: https://disqus.com/admin/signup/
-#duoshuo_shortname: xxx  # get one: http://duoshuo.com/create-site/
+duoshuo_shortname: imtim12138  # get one: http://duoshuo.com/create-site/
 
 permalink: /archivers/:title
 gems:
