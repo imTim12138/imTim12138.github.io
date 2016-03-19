@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  "用jekyll生成文章页面"
-date:   2016-03-19 11:37:13
+date:  2016-03-19 11:37:13
 categories: jekyll
-permalink: /archivers/jekyll-environment-config
+permalink: /archivers/environment
 ---
 
 # 怎样用jekyll生成文章页面
