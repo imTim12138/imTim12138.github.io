@@ -1,16 +1,9 @@
 ---
 layout: default
 ---
-<<<<<<< HEAD
 <div class="home">
   <a class="rss-link" href="{{ "/feed.xml" | prepend: site.baseurl }}">RSS Feed</a>
   <h1 class="page-heading">文章</h1>
-=======
-
-<div class="home">
-  <a class="rss-link" href="{{ "/feed.xml" | prepend: site.baseurl }}">RSS Feed</a>
-  <h1 class="page-heading">Articles</h1>
->>>>>>> origin/gh-pages
 
   <ul class="post-list">
     {% for post in paginator.posts %}
@@ -18,11 +11,7 @@ layout: default
         <h2>
           <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
         </h2>
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> origin/gh-pages
         <div class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</div>
 
         <div class="post-excerpt">
@@ -34,11 +23,7 @@ layout: default
       </li>
     {% endfor %}
   </ul>
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> origin/gh-pages
   <!-- Pagination links -->
 <div class="pagination">
   {% if paginator.previous_page %}
