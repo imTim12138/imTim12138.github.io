@@ -41,9 +41,9 @@ windows下受不了命令行点阵字符的同学,可以试试大名鼎鼎的`cm
 
 ## 开始写博客
 
-> [kramdown解析器语法](http://kramdown.gettalong.org/quickref.html)
-
-> [YAML模板文件头](http://jekyll.bootcss.com/docs/frontmatter/)
++ [kramdown解析器语法](http://kramdown.gettalong.org/quickref.html)
+- [GFM语法糖](http://ju.outofmemory.cn/entry/149460)
+- [YAML模板文件头](http://jekyll.bootcss.com/docs/frontmatter/)
 
 写在被jekyll读取的文件头部定义YAML信息，包含各种变量，使静态页面信息可以在每次编译时有规则地变动。
 
