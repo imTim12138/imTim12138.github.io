@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "体面地用ngspice电路仿真"
+date: 2016-03-19
 categories: circuit-simulation
 ---
 之前在课上用Pspice仿真机器狗，安装过程有点“尴尬”，所以想找个免费的Spice软件来。首先想到的就是大名鼎鼎的GNU项目，然后发现了`ngspice`，在linux端很容易就可以得到软件包，windows上虽然操作逻辑不是很合适，但是用起来也没什么障碍。
