@@ -13,29 +13,30 @@
 	background-color: $header-bg;
 	padding: 10px;
 	margin: 0;
-	
+
 	&:after {
 		clear: both;
 		content: ' ';
 		display: block;
 	}
-	
+
 	.site-title {
 		float: left;
 		color: $header-fg;
+		text-shadow:0 0 5px #CCCCCC, 0 0 10px #CCCCCC, 0 0 15px #2400FF, 0 0 20px #635884, 0 0 25px #9278C7, 0 0 30px #FFFFFF, 0 0 50px #FFFFFF, 0 0 80px #FFFFFF, 0 0 100px #FFFFFF, 0 0 150px #FFFFFF;
 		text-decoration: none;
 		font-size: $base-font-size;
 		line-height: $base-font-size * 2;
 	}
 	.site-nav {
 		text-align:right;
-		
+
 		a {
 			text-decoration: none;
 			color: $header-link;
 			padding: 10px 20px;
 			white-space: nowrap;
-		
+
 			&:hover, &:focus {
 				background: $header-bg-hover;
 			}
@@ -68,7 +69,7 @@
 			background: #EEE;
 		}
 	}
-	
+
 	img {
 		max-width:100%;
 	}
@@ -95,7 +96,7 @@
 	color: #666;
 	font-size: $small-font-size;
 	padding-bottom: 20px;
-	
+
 	p {
 	    margin: 0;
 	}
@@ -103,12 +104,12 @@
         padding-left: 20px;
         margin: 0;
     }
-	
+
 	&:not(:first-child) {
     	border-top: 1px solid #ccc;
     	padding-top: 20px;
     }
-    
+
     .col-box-title {
     	color: #333;
 	    margin-bottom: 10px;
@@ -160,7 +161,7 @@
 			text-decoration: none;
 			border-radius: 5px;
     		white-space: nowrap;
-			
+
 			&:hover {
 				transition: background 0.3s ease;
 				background: #666;
