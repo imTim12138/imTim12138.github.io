@@ -14,9 +14,10 @@ ARM定义的映射外设寄存器的内存地址：
 ![memary](/images/memary.png)
 
 ## 引例
+
 先引一个Crotex-M权威指南上,展现原理的例子：
 
-1.定义指向0x40010800、0x40010804、0x40010808三个字的指针，并直接添加*，用于给特定地址直接赋值。
+**1.定义指向0x40010800、0x40010804、0x40010808三个字的指针，并直接添加*，用于给特定地址直接赋值。**
 
 ~~~scala
 /* STN32F 100RBT6BeGPIO A 端口配置寄存器低字 */
@@ -29,7 +30,7 @@ ARM定义的映射外设寄存器的内存地址：
 ~~~
 > Tips:最里层两个同级括号将整数强制转换成`volatile unsigned long`型指针，最外层是为了取指针直接给指向的地址赋值。
 
-2.操纵寄存器
+**2.操纵寄存器**
 
 ~~~cpp
 /* 复位GPIOA */
@@ -47,7 +48,9 @@ void GPIOA_reset(void) {
 
 对于较大量的寄存器操作，举串口做的例子(源码自设备头`stm32f10x.h`和驱动库`stm32f10x_usart.c`等文件)：
 
-1.一些需要常用的接口外设的基地址映射不是直接定义的，而是由某基地址再加偏移地址得到的。如`STM32F1XX_DFP`中`USART1`在内存中映射的方式：
+**1.一些需要常用的接口外设的基地址映射不是直接定义的，而是由某基地址再加偏移地址得到的。**
+
+如`STM32F1XX_DFP`中`USART1`在内存中映射的方式：
 
 ~~~scala
 /*!< Peripheral base address in the alias region */
@@ -59,10 +62,11 @@ void GPIOA_reset(void) {
 //...
 ~~~
 
-2.可以看到地址定义在上图的Peripheral位段区。
+**2.可以看到地址定义在上图的Peripheral位段区。**
+
 - 使用16位偏移地址可以不用每次都存储32位地址常量，减小程序体积。
 
-3.为多个相同的`USARTx`外设构造相同的数据结构，创建可复用的代码，这样的接口不仅仅减小代码体积，还能以一个实例同时初始化或配置多个同种外设：
+**3.为多个相同的`USARTx`外设构造相同的数据结构，创建可复用的代码，这样的接口不仅仅减小代码体积，还能以一个实例同时初始化或配置多个同种外设：**
 
 ~~~scala
 typedef struct
@@ -84,8 +88,7 @@ typedef struct
 } USART_TypeDef;
 ~~~
 
-4."__IO"是CMSIS标准头中的定义,只是给变量的类型加以限定,用到了两个类型限定符`const`
-和`volatile`
+**4.`IO`是CMSIS标准头中的定义,只是给变量的类型加以限定,用到了两个类型限定符`const`**
 
 ```scala
 #ifdef _cplusplus //对于ISO-C...我们不去管它
@@ -97,7 +100,7 @@ typedef struct
 #define _IO voiatile /* !<定义"读/写"权限 */
 ```
 
-5.USART发送一个字的函数--例子1:
+**5.USART发送一个字的函数--例子1:**
 
 **stm32f10x_usart.c源文件中**
 
@@ -115,7 +118,9 @@ void USART_SendData(USART_TypeDef* USARTx, uint16_t Data)
 ```
 > Tips:<span style="color: green">DR</span>(数据寄存器的后9位[0-8]是TXD\RXD\校验等等数据的存储域)
 
-6.位段获取USART各种状态位--例子2:
+**6.位段获取USART各种状态位--例子2:**
+
+软件查询结构体元素UARTx->SR的位读取结果,实现访问
 
 ```cpp
 /**
@@ -164,6 +169,10 @@ FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 
 **stm32f10x_usart.h头文件中**:定义了多个标志位
 
+状态寄存器的位定义:
+
+![UARTx_DR](/images/USART_SR.png)
+
 ```scala
 /** @defgroup USART_Flags
   * @{
@@ -188,12 +197,15 @@ FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 #define IS_USART_DATA(DATA) ((DATA) <= 0x1FF)
 ```
 
-7.外设寄存器详细位定义,用于驱动函数操纵外设具体细节:
+**7.外设寄存器详细位定义,用于驱动函数操纵外设具体细节:**
+
 - 硬件位段操作的原子性，决定不会再因为与中断等异常共享变量而丢失数据。原因就是，中断一定会在位段操作之后再被响应。
+
+## Freescale kinetis MCU lib实现
 
 # <span style="color: red">待续</span>
 
-# Keil.stm32f1xx_DFP中的其它例子
+## Keil.stm32f1xx_DFP中的其它例子
 
 ### FSMC
 
