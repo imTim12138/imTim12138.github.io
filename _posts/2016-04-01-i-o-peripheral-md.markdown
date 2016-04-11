@@ -201,7 +201,7 @@ FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 
 - 硬件位段操作的原子性，决定不会再因为与中断等异常共享变量而丢失数据。原因就是，中断一定会在位段操作之后再被响应。
 
-## Freescale kinetis MCU lib实现
+## Freescale kinetis MCU lib实
 
 # <span style="color: red">待续</span>
 
