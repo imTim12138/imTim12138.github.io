@@ -88,7 +88,7 @@ typedef struct
 } USART_TypeDef;
 ~~~
 
-**4.`IO`是CMSIS标准头中的定义,只是给变量的类型加以限定,用到了两个类型限定符`const`**
+**4."`__IO`"是CMSIS标准头中的定义,只是给变量的类型加以限定,用到了两个类型限定符`const`和`volatile`**
 
 ```scala
 #ifdef _cplusplus //对于ISO-C...我们不去管它
@@ -167,7 +167,7 @@ FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 //...
 ```
 
-**stm32f10x_usart.h头文件中**:定义了多个标志位
+**stm32f10x_usart.h**头文件中定义了多个标志位
 
 状态寄存器的位定义:
 
@@ -201,7 +201,7 @@ FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 
 - 硬件位段操作的原子性，决定不会再因为与中断等异常共享变量而丢失数据。原因就是，中断一定会在位段操作之后再被响应。
 
-## Freescale kinetis MCU lib实
+## Freescale kinetis MCU lib I/O实例
 
 # <span style="color: red">待续</span>
 
