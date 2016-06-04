@@ -215,4 +215,14 @@ FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 
 # CCS.MSP-Ware中的例子
 
+买的msp432p401r的开发版比较厉害，固件库已经固化到flash的指定位置，当在自己工程中调用固
+件库的代码时，编译器不产生对应程序，而是直接调用已经存在的程序的入口。这个套路，明显就是
+为现在烂街的创客准备的，做demo专用。
+
+先看这个芯片的devices头有关io的定义：
+
 # controlSUITE-C2000-MCU中的例子
+
+饼子的C2000dsp是顺承着msp432买的。也就是同样超级火的tms320f28377s开发板，这个板子的io
+方式很多，多了CAN总线控制器，还有usb2.0全速控制器，配合CLA等高级硬件组件，数据io和外设
+访问更加复杂。
