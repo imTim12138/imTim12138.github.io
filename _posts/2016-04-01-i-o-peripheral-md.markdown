@@ -223,6 +223,6 @@ FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 
 # controlSUITE-C2000-MCU中的例子
 
-饼子的C2000dsp是顺承着msp432买的。也就是同样超级火的tms320f28377s开发板，这个板子的io
+饼子的C2000系列mcu是顺承着msp432买的。也就是同样超级火的tms320f28377s开发板，这个板子的io
 方式很多，多了CAN总线控制器，还有usb2.0全速控制器，配合CLA等高级硬件组件，数据io和外设
 访问更加复杂。
