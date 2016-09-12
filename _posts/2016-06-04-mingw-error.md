@@ -7,7 +7,7 @@ categories: ENVIRONMENT
 
 mingw编译时遇到标题所示错误，有可能你遇到的是跟我一样的问题。
 
-浏览MinGW-WinAPI帮助时，不小心运行了命令 g`mingw-get update && mingw-get upgrade` 然后
+浏览MinGW-WinAPI帮助时，不小心运行了命令 `mingw-get update && mingw-get upgrade` 然后
 也没注意输出，gcc 也能用。第二天发现用g++编译文件时输出`g++: error: CreateProcess: No such file or directory`
 刚开始以为是安装什么新工具导致环境变量冲突了，可是检查发现也没问题，没有gcc/g++文件名冲突。
 

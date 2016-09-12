@@ -102,7 +102,7 @@ typedef struct
 
 **5.USART发送一个字的函数--例子1:**
 
-**stm32f10x_usart.c源文件中**
+**`stm32f10x_usart.c`源文件中**
 
 ```cpp
 void USART_SendData(USART_TypeDef* USARTx, uint16_t Data)
@@ -120,7 +120,7 @@ void USART_SendData(USART_TypeDef* USARTx, uint16_t Data)
 
 **6.位段获取USART各种状态位--例子2:**
 
-软件查询结构体元素UARTx->SR的位读取结果,实现访问
+软件查询结构体元素`UARTx->SR`的位读取结果,实现访问
 
 ```cpp
 /**
@@ -199,9 +199,33 @@ FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 
 **7.外设寄存器详细位定义,用于驱动函数操纵外设具体细节:**
 
+- 对外设寄存器的部分位或位域的访问，通常通过`位段`操作来实现。
+
 - 硬件位段操作的原子性，决定不会再因为与中断等异常共享变量而丢失数据。原因就是，中断一定会在位段操作之后再被响应。
 
-## Freescale kinetis MCU lib I/O实例
+- 具体的C程序实现存储器位段操作的过程是，直接通过访问位段别名，来操作存储器位段，支持位段操作的寄存器(即`bit-band`)除了自身的地址外，每一位又被赋予另外的地址，以供位段操作,编址示意见文章开头图。
+
+```scala
+//没有在stm32f1xx_DFP里找到运用位段特性的例子，只好看一个权威指南上的例子：
+
+/*最简单的方法就是分别直接声明寄存器地址和位段地址*/
+#define DEVICE_REG0 * ((volatile unsigned long * ) (0x40000000) )
+#define DEVICE_REG0_BIT0 * ((volatile unsigned long * ) (0x42000000) )
+#define DEVICE_REG0_BIT1 * ((volatile unsigned long * ) (0x42000004) )
+//...
+DEVICE_REG0 = 0xAB; //这个姿势是直接使用寄存器地址，访问整个寄存器
+//...
+DEVICE_REG0 = DEVICE_REG0 | 0x2; //此处没使用位段方式，以赋值方式设置寄存器第1位
+//...
+DEVICE_REG0_BIT1 = 0x1; //利用位段特性使用位段别名设置第1位
+```
+
+- 这样的位段操作适用于时序要求精确的场合，可确保不被中断异常影响。而且据论坛网友说又有
+“10倍”的速度提升。这种东西还是有时间测测再说XD
+
+## Freescale kinetis 60 FX/DN MCU 山外参考代码 I/O实例
+
+- 看了点K60山外库的实现，觉得逻辑真强，宏用的很多，对很多细节都有点懵
 
 # <span style="color: red">待续</span>
 
@@ -215,7 +239,7 @@ FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 
 # CCS.MSP-Ware中的例子
 
-买的msp432p401r的开发版比较厉害，固件库已经固化到flash的指定位置，当在自己工程中调用固
+买的msp432p401r的开发版比较厉害，固件库已经固化到flash，当在自己工程中调用固
 件库的代码时，编译器不产生对应程序，而是直接调用已经存在的程序的入口。这个套路，明显就是
 为现在烂街的创客准备的，做demo专用。
 
@@ -224,5 +248,5 @@ FlagStatus USART_GetFlagStatus(USART_TypeDef* USARTx, uint16_t USART_FLAG)
 # controlSUITE-C2000-MCU中的例子
 
 饼子的C2000系列mcu是顺承着msp432买的。也就是同样超级火的tms320f28377s开发板，这个板子的io
-方式很多，多了CAN总线控制器，还有usb2.0全速控制器，配合CLA等高级硬件组件，数据io和外设
+方式很多，多了CAN总线控制器，还有usb2.0全速控制器，配合CLA等高级东东，数据io和外设
 访问更加复杂。
