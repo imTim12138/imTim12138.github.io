@@ -9,6 +9,8 @@ categories: jekyll
 
 终于搭完了 `ruby-gem&DevKit + jekyll + git` 的博客环境，有点曲折。而生成站点之后发现，想读懂这么多高层次的代码很难，看的少导致很不习惯。索性查查教程，总结一下工具的使用方法，顺便了解下jekyll的原理。
 
+
+
 ## 搭建环境
 
 以前在windows上用gcc的时候安装了`MinGW`，在用git时安装了`git-bush`（也是基于`MinGW`）。此番需要安装`ruby+DevKit`也不很麻烦。
