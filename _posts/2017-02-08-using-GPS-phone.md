@@ -12,7 +12,7 @@ categories: MATERIAL
 
 ## 第一步：下载定位电话app:
 
-|[<span style="color: purple">IOS-AppStore</span>](https://itunes.apple.com/us/app/mi-tu-ding-wei-dian-hua/id1100991393?mt=8)        |[<span style="color: purple">Android-miStore</span>](/images/GPSphone.apk) |
+|[<span style="color: purple">IOS-AppStore</span>](https://itunes.apple.com/us/app/mi-tu-ding-wei-dian-hua/id1100991393?mt=8)        |[<span style="color: purple">Android-miStore</span>](http://bean.imibaby.net/qr?sn=CC.7SLtwc9e7+8pcTKGomBv3Q==) |
 
 ## 第二步：打开app扫描以下二维码，绑定定位电话添加定位电话群组
 
