@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>君子如兰</title>
+    <description>希望不要再重复搜索同一教程。</description>
+    <link>http://imtim12138.github.io/</link>
+    <atom:link href="http://imtim12138.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>2017-02-06 09:32:00 +0800</pubDate>
+    <lastBuildDate>2017-02-06 09:32:00 +0800</lastBuildDate>
+    <generator>Jekyll v</generator>
+    
+      <item>
+        <title>EDA实验资料</title>
+        <description>&lt;p&gt;令人充满恐惧的不是蜜汁缩进，而是不能自动补全还强迫用DOS的小霸王programme主机。&lt;/p&gt;
+
+&lt;h1 id=&quot;section&quot;&gt;直接下载实验文件&lt;/h1&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;VHDL源文件&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;/images/EDA-exp.zip&quot;&gt;实验一、二、三&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;section-1&quot;&gt;实验一：2选1数据选择器&lt;/h1&gt;
+
+&lt;p&gt;文件名&lt;code&gt;MUX21A.vhd&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;```sql
+ENTITY MUC21A IS
+ PORT ( a, b, s: IN BIT;
+              y: OUT BIT);
+END ENTITY MUX21A;
+ARCHITECTURE one OF MUX21A IS
+  BEGIN
+    PROCESS (a,b,s)
+      BEGIN
+        IF s = ‘0’ THEN y &amp;lt;= a; ELSE y &amp;lt;= b;
+        END IF;
+    END PROCESS;
+  END ARCHITECTURE one;&lt;/p&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;h1 id=&quot;section-2&quot;&gt;实验二： 加法计数器&lt;/h1&gt;
+
+&lt;p&gt;文件名&lt;code&gt;CNT10.vhd&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;```sql
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
+ENTITY CNT10 IS
+  PORT (CLK,RST,EN : IN STD_LOGIC;
+        CQ : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+END CNT10;
+ARCHITECTURE behav OF CNT10 IS
+  BEGIN
+    PROCESS(CLK,RST,EN)
+      VARIABLE CQI : STD_LOGIC_VECTOR(3 DOWNTO 0);
+    BEGIN
+      IF RSt = ‘1’ THEN CQI := (OtHERS =&amp;gt;’0’); –计数器异步复位
+      ELSIF CLKEVENT AND CLK-‘1’ THEN          –检测时钟上升沿
+        IF EN = ‘1’ THEN                       –检测是否允许计数（同步使能）
+          IF CQI &amp;lt; 9 THEN CQI := CQI + 1;      –允许计数，检测是否小于9
+            ELSE CQI := (OTHERS =&amp;gt; ‘0’);       –大于9，计数值清零
+          END IF;
+        END IF;
+      END IF;
+      IF CQI = 9 THEN COUT &amp;lt;= ‘1’;             –计数大于9，输出进位信号
+        ELSE COUT &amp;lt;= ‘0’;
+      END IF;
+          CQ &amp;lt;= CQI;                           –将计数值向端口输出
+    END PROCESS;
+  END behav;&lt;/p&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;h1 id=&quot;section-3&quot;&gt;实验三： 3线-8线译码器&lt;/h1&gt;
+
+&lt;p&gt;文件名&lt;code&gt;DEC38.vhd&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;```sql
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+ENTITY DEC38
+PORT(a,b,c,g1,g2a,g2b: IN STD_LOGIC;
+                    y: OUT STD_LOGIC_VECTOR(7 DOWNTO 0));
+END ENTITY  DEC38;
+ARCHITECTURE rt1 OF DEC38 IS
+SIGNAL indata:STD_LOGICVECTOR(2 DOWNTO 0);
+BEGIN
+  indata &amp;lt;= c &amp;amp; b &amp;amp; a;
+  PROCESS(indata,g1,g2a,g2b) IS
+  BEGIN
+    IF(g1=’1’ and g2a=’0’ and g2b=’0’) THEN
+      CASE indata IS
+        WHEN “000”=&amp;gt;y&amp;lt;=”11111110”;
+        WHEN “001”=&amp;gt;y&amp;lt;=”11111101”;
+        WHEN “010”=&amp;gt;y&amp;lt;=”11111011”;
+        WHEN “011”=&amp;gt;y&amp;lt;=”11110111”;
+        WHEN “100”=&amp;gt;y&amp;lt;=”11101111”;
+        WHEN “101”=&amp;gt;y&amp;lt;=”11011111”;
+        WHEN “110”=&amp;gt;y&amp;lt;=”10111111”;
+        WHEN “111”=&amp;gt;y&amp;lt;=”01111111”;
+        WHEN OTHERS=&amp;gt;y&amp;lt;=”XXXXXXXX”;
+      END CASE;
+    ELSE
+      y&amp;lt;=”11111111”;
+    END IF;
+  END PROCESS;
+END ARCHITECTURE rt1;&lt;/p&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/old-pc.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>2016-11-20 10:00:00 +0800</pubDate>
+        <link>http://imtim12138.github.io/MATERIAL/2016/11/20/EDA-exp.html</link>
+        <guid isPermaLink="true">http://imtim12138.github.io/MATERIAL/2016/11/20/EDA-exp.html</guid>
+        
+        
+        <category>MATERIAL</category>
+        
+      </item>
+    
+      <item>
+        <title>吃LF的亏上**的当最后陷入疯狂-吐槽短期内经历Programme四大悲之二</title>
+        <description>&lt;p&gt;搜索历史条目瞬间激增，无线键盘鼠标多次没电。别急，你坑定需要渡劫。&lt;/p&gt;
+
+&lt;h1 id=&quot;section&quot;&gt;什么鬼？！为什么我的犬生中要碰到这样的事？！&lt;/h1&gt;
+
+&lt;p&gt;筒子们看到这个post的&lt;span style=&quot;color: red&quot;&gt;摘要&lt;/span&gt;有多不容易你造吗&lt;span style=&quot;color: red&quot;&gt;？！&lt;/span&gt;简直就不需要干任何事就阔以啊。&lt;/p&gt;
+
+&lt;p&gt;有那么一个月没弄这个博客的仓库了，期间添加了两篇草稿，一直也没写完，然后前两天commit了一下，突然发现本地调试都好好的首页突然上传完就不好使了，所有文章的摘要都没了，直接显示全文。。。QAQ；而且在commit网站仓库之前，在linux上make一个命令行程序就是死报一个段错误，都要气死了。。。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;当然先解决的是段错误的问题，哦，当然&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;是踏马在用shift-8搜索形参时根本不可能知道那里还改了个*。&lt;/p&gt;
+
+&lt;p&gt;然后就是各种搜为啥不显示摘要。&lt;/p&gt;
+
+&lt;p&gt;先把folk的大神的源仓库看了一波，发现啥也没改都一样。
+然后就怀疑jekyll环境有问题，gem了半天发现没啥可更的。
+最后一试删origin重建，果然，无果。&lt;/p&gt;
+
+&lt;p&gt;第二天重生后，决定这些小事先放一放，先整其它的环境。
+蓦地发现，新文件notepad打开都可以换行了？
+原来是假期更win10时atom的设置神奇的变了，行尾LF→CRLF。。。&lt;/p&gt;
+
+&lt;p&gt;科科，命途多舛的摘要兄你可回来了T^T&lt;/p&gt;
+</description>
+        <pubDate>2016-09-13 10:00:00 +0800</pubDate>
+        <link>http://imtim12138.github.io/Spit-slot/2016/09/13/god-be-thanked.html</link>
+        <guid isPermaLink="true">http://imtim12138.github.io/Spit-slot/2016/09/13/god-be-thanked.html</guid>
+        
+        
+        <category>Spit-slot</category>
+        
+      </item>
+    
+      <item>
+        <title>MinGW-gcc/g++编译error：CreateProcess: No such file or directory</title>
+        <description>&lt;p&gt;mingw编译时遇到标题所示错误，有可能你遇到的是跟我一样的问题。&lt;/p&gt;
+
+&lt;p&gt;浏览MinGW-WinAPI帮助时，不小心运行了命令 &lt;code&gt;mingw-get update &amp;amp;&amp;amp; mingw-get upgrade&lt;/code&gt; 然后
+也没注意输出，gcc 也能用。第二天发现用g++编译文件时输出&lt;code&gt;g++: error: CreateProcess: No such file or directory&lt;/code&gt;
+刚开始以为是安装什么新工具导致环境变量冲突了，可是检查发现也没问题，没有gcc/g++文件名冲突。&lt;/p&gt;
+
+&lt;p&gt;意识到有可能是之前检查更新命令没运行成功。一顿搜，引起 &lt;code&gt;g++: error: CreateProcess: No such file or directory&lt;/code&gt; 的可能是执行&lt;code&gt;mingw-get update &amp;amp;&amp;amp; mingw-get upgrade&lt;/code&gt;时更新的解压安装包下载错误（据说经常是下载不完整）导致。&lt;/p&gt;
+
+&lt;p&gt;搜到说先执行：&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;mingw-get remove mingw32-gcc-g++ &amp;amp;&amp;amp; mingw-get remove mingw32-gcc&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;然后直接尝试重新安装：&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;mingw-get update &amp;amp;&amp;amp; mingw-get installmingw32-gcc-g++&lt;/code&gt;
+&lt;code&gt;mingw-get rupdate &amp;amp;&amp;amp; mingw-get installmingw32-gcc&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;重现更新下载完安装时的错误输出，发现了我是第3行这个文件解压时报错：&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+Checking catalogue: mingw-developer-toolkit.xml; (item 111 of 112)              
+Checking catalogue: msys-system-builder.xml; (item 112 of 112)                  
+install: gcc-c++-4.9.3-1-mingw32-bin.tar.xz                                     
+ installing gcc-c++-4.9.3-1-mingw32-bin.tar.xz                                  
+mingw-get: *** ERROR *** D:\MinGW\/libexec/gcc/mingw32/4.9.3/cc1plus.exe: extrac
+tion failed                                                                     
+mingw-get: *** ERROR *** unexpected end of archive reading content record       
+mingw-get: *** ERROR *** unexpected end of archive reading header record        
+install: gcc-c++-4.8.1-4-mingw32-dev.tar.lzma                                   
+ installing gcc-c++-4.8.1-4-mingw32-dev.tar.lzma                                
+install: gcc-c++-4.8.1-4-mingw32-doc.tar.lzma                                   
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;找到源头就好办了，解除掉gcc和g++的错误安装，然后找到下载的临时文件&lt;code&gt;gcc-c++-4.9.3-1-mingw32-bin.tar.xz&lt;/code&gt;
+在MinGW目录下&lt;code&gt;D:\MinGW\var\cache\mingw-get\packages&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;删除之。&lt;/p&gt;
+
+&lt;p&gt;重新运行更新 update，下载之前出错的 gcc、g++安装包…
+迫不及待ing…应该已经恢复了吧？！&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;g++ hellow.cpp&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;“没有消息是最好的消息T^T”&lt;/p&gt;
+</description>
+        <pubDate>2016-06-04 22:00:00 +0800</pubDate>
+        <link>http://imtim12138.github.io/ENVIRONMENT/2016/06/04/mingw-error.html</link>
+        <guid isPermaLink="true">http://imtim12138.github.io/ENVIRONMENT/2016/06/04/mingw-error.html</guid>
+        
+        
+        <category>ENVIRONMENT</category>
+        
+      </item>
+    
+      <item>
+        <title>读MCU实现各种姿势的I/O和外设访问
+程序-笔记</title>
+        <description>&lt;p&gt;以前零零碎碎地看I/O和外设访问的程序库，总是形不成套路，最近又看了些框架清晰的书和程序，决心把这方面总结下，T_T记性不好，总得备“不时之需”。&lt;/p&gt;
+
+&lt;h1 id=&quot;arm-span-stylecolor-purplecrotex--m-span-&quot;&gt;ARM &lt;span style=&quot;color: purple&quot;&gt;Crotex- M &lt;/span&gt; 风格的接口实现&lt;/h1&gt;
+&lt;p&gt;通过使用指针式访问内存某些特定地址，可以实现对特定外设的寄存器访问。外设的地址映射与硬件有关，而构造的对应外设的数据结构也取决于系统存储器中外设映射地址的分布状态。&lt;/p&gt;
+
+&lt;p&gt;ARM定义的映射外设寄存器的内存地址：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/memary.png&quot; alt=&quot;memary&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;引例&lt;/h2&gt;
+
+&lt;p&gt;先引一个Crotex-M权威指南上,展现原理的例子：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1.定义指向0x40010800、0x40010804、0x40010808三个字的指针，并直接添加*，用于给特定地址直接赋值。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;/* STN32F 100RBT6BeGPIO A 端口配置寄存器低字 */
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;#define GPIOA_CRL  ( * ((volatile unsigned long * ) (0x40010800)))
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;/* STN32F 100RBT6BeGPIO A 端口配置寄存器高字 */
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;#define GPIOA_CRH  ( * ((volatile unsigned long * ) (0x40010804)))
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;/* STN32F 100RBT6BeGPIO A 端口输入数据寄存器 */
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;#define GPIOA_IDR  ( * ((volatile unsigned long * ) (0x40010808)))
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;//...
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Tips:最里层两个同级括号将整数强制转换成&lt;code&gt;volatile unsigned long&lt;/code&gt;型指针，最外层是为了取指针直接给指向的地址赋值。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;2.操纵寄存器&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#777&quot;&gt;/* 复位GPIOA */&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;void&lt;/span&gt; GPIOA_reset(&lt;span style=&quot;color:#088;font-weight:bold&quot;&gt;void&lt;/span&gt;) {  
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;  GPIOA_CRL = &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;;&lt;span style=&quot;color:#777&quot;&gt;//位0~7，都设置为模拟输入&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;  GPIOA_CRL = &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;;&lt;span style=&quot;color:#777&quot;&gt;//位8~15，都设置为模拟输入&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;  GPIOA_ODR = &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;;&lt;span style=&quot;color:#777&quot;&gt;//默认输出0&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;return&lt;/span&gt;;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Tips：直接操纵少量寄存器这样非常好用，但是对于大量寄存器的操作这样就有问题了&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;keilspan-stylecolor-purplestm32f1xxdfpspanspan-stylecolor-red-usartspan&quot;&gt;Keil.&lt;span style=&quot;color: purple&quot;&gt;STM32F_1xx_DFP&lt;/span&gt;&lt;span style=&quot;color: red&quot;&gt; USART&lt;/span&gt;&lt;/h2&gt;
+
+&lt;p&gt;对于较大量的寄存器操作，举串口做的例子(源码自设备头&lt;code&gt;stm32f10x.h&lt;/code&gt;和驱动库&lt;code&gt;stm32f10x_usart.c&lt;/code&gt;等文件)：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1.一些需要常用的接口外设的基地址映射不是直接定义的，而是由某基地址再加偏移地址得到的。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;如&lt;code&gt;STM32F1XX_DFP&lt;/code&gt;中&lt;code&gt;USART1&lt;/code&gt;在内存中映射的方式：&lt;/p&gt;
+
+&lt;div&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;/*!&amp;lt; Peripheral base address in the alias region */
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;#define PERIPH_BASE           ((uint32_t)0x40000000)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;//...
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;#define APB2PERIPH_BASE       (PERIPH_BASE + 0x10000)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;//...
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;#define USART1_BASE           (APB2PERIPH_BASE + 0x3800)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;//...
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;2.可以看到地址定义在上图的Peripheral位段区。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;使用16位偏移地址可以不用每次都存储32位地址常量，减小程序体积。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;3.为多个相同的&lt;code&gt;USARTx&lt;/code&gt;外设构造相同的数据结构，创建可复用的代码，这样的接口不仅仅减小代码体积，还能以一个实例同时初始化或配置多个同种外设：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;typedef struct
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;{
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;  __IO uint16_t SR;//状态寄存器
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;  uint16_t  RESERVED0;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;  __IO uint16_t DR;//数据寄存器
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;  uint16_t  RESERVED1;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;  __IO uint16_t BRR;//波特比率寄存器
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;  uint16_t  RESERVED2;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;  __IO uint16_t CR1;//控制寄存器1
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;  uint16_t  RESERVED3;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;  __IO uint16_t CR2;//控制寄存器2
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;  uint16_t  RESERVED4;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;  __IO uint16_t CR3;//控制寄存器3
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;  uint16_t  RESERVED5;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;  __IO uint16_t GTPR;//保护时间和预分频寄存器
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;  uint16_t  RESERVED6;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;} USART_TypeDef;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;4.”&lt;code&gt;__IO&lt;/code&gt;“是CMSIS标准头中的定义,只是给变量的类型加以限定,用到了两个类型限定符&lt;code&gt;const&lt;/code&gt;和&lt;code&gt;volatile&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;scala
+#ifdef _cplusplus //对于ISO-C...我们不去管它
+  #define _I volatile /* !&amp;lt;定义&quot;只读&quot;权限 */
+#else
+  #define _I volatile const/* !&amp;lt;定义&quot;只读&quot;权限 */
+#endif
+#define _O volatile /* !&amp;lt;定义&quot;只写&quot;权限 */
+#define _IO voiatile /* !&amp;lt;定义&quot;读/写&quot;权限 */
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;5.USART发送一个字的函数–例子1:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;stm32f10x_usart.c&lt;/code&gt;源文件中&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;```cpp
+void USART_SendData(USART_TypeDef* USARTx, uint16_t Data)
+{
+  /* Check the parameters */
+  assert_param(IS_USART_ALL_PERIPH(USARTx));
+  assert_param(IS_USART_DATA(Data));&lt;/p&gt;
+
+&lt;p&gt;/* Transmit Data */
+  USARTx-&amp;gt;DR = (Data &amp;amp; (uint16_t)0x01FF);
+}
+//…
+```
+&amp;gt; Tips:&lt;span style=&quot;color: green&quot;&gt;DR&lt;/span&gt;(数据寄存器的后9位[0-8]是TXD\RXD\校验等等数据的存储域)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;6.位段获取USART各种状态位–例子2:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;软件查询结构体元素&lt;code&gt;UARTx-&amp;gt;SR&lt;/code&gt;的位读取结果,实现访问&lt;/p&gt;
+
+&lt;p&gt;```cpp
+/**
+  * @brief  Checks whether the specified USART flag is set or not.
+  * @param  USARTx: Select the USART or the UART peripheral.
+  *   This parameter can be one of the following values:
+  *   USART1, USART2, USART3, UART4 or UART5.
+  * @param  USART_FLAG: specifies the flag to check.
+  *   This parameter can be one of the following values:
+  *     @arg USART_FLAG_CTS:  CTS Change flag (not available for UART4 and UART5)
+  *     @arg USART_FLAG_LBD:  LIN Break detection flag
+  *     @arg USART_FLAG_TXE:  Transmit data register empty flag
+  *     @arg USART_FLAG_TC:   Transmission Complete flag
+  *     @arg USART_FLAG_RXNE: Receive data register not empty flag
+  *     @arg USART_FLAG_IDLE: Idle Line detection flag
+  *     @arg USART_FLAG_ORE:  OverRun Error flag
+  *     @arg USART_FLAG_NE:   Noise Error flag
+  *     @arg USART_FLAG_FE:   Framing Error flag
+  *     @arg USART_FLAG_PE:   Parity Error flag
+  * @retval The new state of USART_FLAG (SET or RESET).
+  &lt;em&gt;/
+FlagStatus USART_GetFlagStatus(USART_TypeDef&lt;/em&gt; USARTx, uint16_t USART_FLAG)
+{
+  FlagStatus bitstatus = RESET;
+  /* Check the parameters &lt;em&gt;/
+  assert_param(IS_USART_ALL_PERIPH(USARTx));
+  assert_param(IS_USART_FLAG(USART_FLAG));
+  /&lt;/em&gt; The CTS flag is not available for UART4 and UART5 */
+  if (USART_FLAG == USART_FLAG_CTS)
+  {
+    assert_param(IS_USART_123_PERIPH(USARTx));
+  }  &lt;/p&gt;
+
+&lt;p&gt;if ((USARTx-&amp;gt;SR &amp;amp; USART_FLAG) != (uint16_t)RESET)
+  {
+    bitstatus = SET;
+  }
+  else
+  {
+    bitstatus = RESET;
+  }
+  return bitstatus;
+}
+//…
+```&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;stm32f10x_usart.h&lt;/strong&gt;头文件中定义了多个标志位&lt;/p&gt;
+
+&lt;p&gt;状态寄存器的位定义:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/USART_SR.png&quot; alt=&quot;UARTx_DR&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;```scala
+/** @defgroup USART_Flags
+  * @{
+  */&lt;/p&gt;
+
+&lt;h1 id=&quot;define-usartflagcts-----------------------uint16t0x0200&quot;&gt;define USART_FLAG_CTS                       ((uint16_t)0x0200)&lt;/h1&gt;
+&lt;p&gt;#define USART_FLAG_LBD                       ((uint16_t)0x0100)
+#define USART_FLAG_TXE                       ((uint16_t)0x0080)
+#define USART_FLAG_TC                        ((uint16_t)0x0040)
+#define USART_FLAG_RXNE                      ((uint16_t)0x0020)
+#define USART_FLAG_IDLE                      ((uint16_t)0x0010)
+#define USART_FLAG_ORE                       ((uint16_t)0x0008)
+#define USART_FLAG_NE                        ((uint16_t)0x0004)
+#define USART_FLAG_FE                        ((uint16_t)0x0002)
+#define USART_FLAG_PE                        ((uint16_t)0x0001)
+#define IS_USART_FLAG(FLAG) (((FLAG) == USART_FLAG_PE) || ((FLAG) == USART_FLAG_TXE) || \
+                             ((FLAG) == USART_FLAG_TC) || ((FLAG) == USART_FLAG_RXNE) || \
+                             ((FLAG) == USART_FLAG_IDLE) || ((FLAG) == USART_FLAG_LBD) || \
+                             ((FLAG) == USART_FLAG_CTS) || ((FLAG) == USART_FLAG_ORE) || \
+                             ((FLAG) == USART_FLAG_NE) || ((FLAG) == USART_FLAG_FE))
+//…
+#define IS_USART_DATA(DATA) ((DATA) &amp;lt;= 0x1FF)
+```&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;7.外设寄存器详细位定义,用于驱动函数操纵外设具体细节:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;对外设寄存器的部分位或位域的访问，通常通过&lt;code&gt;位段&lt;/code&gt;操作来实现。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;硬件位段操作的原子性，决定不会再因为与中断等异常共享变量而丢失数据。原因就是，中断一定会在位段操作之后再被响应。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;具体的C程序实现存储器位段操作的过程是，直接通过访问位段别名，来操作存储器位段，支持位段操作的寄存器(即&lt;code&gt;bit-band&lt;/code&gt;)除了自身的地址外，每一位又被赋予另外的地址，以供位段操作,编址示意见文章开头图。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;```scala
+//没有在stm32f1xx_DFP里找到运用位段特性的例子，只好看一个权威指南上的例子：&lt;/p&gt;
+
+&lt;p&gt;/&lt;em&gt;最简单的方法就是分别直接声明寄存器地址和位段地址&lt;/em&gt;/
+#define DEVICE_REG0 * ((volatile unsigned long * ) (0x40000000) )
+#define DEVICE_REG0_BIT0 * ((volatile unsigned long * ) (0x42000000) )
+#define DEVICE_REG0_BIT1 * ((volatile unsigned long * ) (0x42000004) )
+//…
+DEVICE_REG0 = 0xAB; //这个姿势是直接使用寄存器地址，访问整个寄存器
+//…
+DEVICE_REG0 = DEVICE_REG0 | 0x2; //此处没使用位段方式，以赋值方式设置寄存器第1位
+//…
+DEVICE_REG0_BIT1 = 0x1; //利用位段特性使用位段别名设置第1位
+```&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;这样的位段操作适用于时序要求精确的场合，可确保不被中断异常影响。而且据论坛网友说又有
+“10倍”的速度提升。这种东西还是有时间测测再说XD&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;freescale-kinetis-60-fxdn-mcu--io&quot;&gt;Freescale kinetis 60 FX/DN MCU 山外参考代码 I/O实例&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;看了点K60山外库的实现，觉得逻辑真强，宏用的很多，对很多细节都有点懵&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;span-stylecolor-redspan&quot;&gt;&lt;span style=&quot;color: red&quot;&gt;待续&lt;/span&gt;&lt;/h1&gt;
+
+&lt;h2 id=&quot;keilstm32f1xxdfp&quot;&gt;Keil.stm32f1xx_DFP中的其它例子&lt;/h2&gt;
+
+&lt;h3 id=&quot;fsmc&quot;&gt;FSMC&lt;/h3&gt;
+
+&lt;h3 id=&quot;spiiic&quot;&gt;SPI和IIC&lt;/h3&gt;
+
+&lt;h3 id=&quot;gpio&quot;&gt;GPIO&lt;/h3&gt;
+
+&lt;h1 id=&quot;ccsmsp-ware&quot;&gt;CCS.MSP-Ware中的例子&lt;/h1&gt;
+
+&lt;p&gt;买的msp432p401r的开发版比较厉害，固件库已经固化到flash，当在自己工程中调用固
+件库的代码时，编译器不产生对应程序，而是直接调用已经存在的程序的入口。这个套路，明显就是
+为现在烂街的创客准备的，做demo专用。&lt;/p&gt;
+
+&lt;p&gt;先看这个芯片的devices头有关io的定义：&lt;/p&gt;
+
+&lt;h1 id=&quot;controlsuite-c2000-mcu&quot;&gt;controlSUITE-C2000-MCU中的例子&lt;/h1&gt;
+
+&lt;p&gt;饼子的C2000系列mcu是顺承着msp432买的。也就是同样超级火的tms320f28377s开发板，这个板子的io
+方式很多，多了CAN总线控制器，还有usb2.0全速控制器，配合CLA等高级东东，数据io和外设
+访问更加复杂。&lt;/p&gt;
+</description>
+        <pubDate>2016-04-01 21:51:00 +0800</pubDate>
+        <link>http://imtim12138.github.io/MCU/2016/04/01/i-o-peripheral-md.html</link>
+        <guid isPermaLink="true">http://imtim12138.github.io/MCU/2016/04/01/i-o-peripheral-md.html</guid>
+        
+        
+        <category>MCU</category>
+        
+      </item>
+    
+      <item>
+        <title>配置锐捷校园网</title>
+        <description>&lt;p&gt;在学校时间长了，配置一百遍校园网也是可能的，毕竟人家利益集团挣的都是硬钱，可不管你软件好不好用。没办法只能把linux和windows平台的mantohust配置放在这里备不时之需。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;下载mentohust:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;a href=&quot;/images/MentoHUST-windows.zip&quot;&gt;mentohust for windows&lt;/a&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;/images/mentohust_0.3.4-1_i386.deb&quot;&gt;mentohust for linux x86&lt;/a&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;/images/mentohust_0.3.4-1_amd64.deb&quot;&gt;mentohust for linux x64&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;Tips: 注意平台和版本。&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;安装&lt;/h2&gt;
+
+&lt;h4 id=&quot;windows&quot;&gt;&lt;strong&gt;windows：&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;解压后以管理员权限安装winpcap&lt;/li&gt;
+  &lt;li&gt;配置账户，设置ip或预先抓好的包&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;Tips: Win8及以上的设备无法安装上面压缩包中的winpcap4_0_2，请安装较新的完全版本&lt;a href=&quot;https://www.baidu.com/s?wd=winpcap&quot;&gt;winpcap&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;linux-apt&quot;&gt;&lt;strong&gt;linux (apt管理)：&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;先在桌面状态栏-&amp;gt;网络菜单-&amp;gt;编辑链接-&amp;gt;编辑以太网有线链接、设置系统有线链接设置。比如ipv4分页中加入自己的固定ip、网关、子网掩码配置项，保存；&lt;/li&gt;
+  &lt;li&gt;直接图形界面安装或在bash中path到&lt;code&gt;deb&lt;/code&gt;软件包所在路径，命令&lt;code&gt;dpkg -i &amp;lt;*.deb&amp;gt;&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;命令行中输入：&lt;code&gt;$ mentohust -h&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;我的配置命令：&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+$ sudo mentohust -u15609844270 -p94nbnooneof -neth0 \
+  -i172.18.200.61 -m255.255.255.0 -g172.18.200.1    \
+  -s202.96.69.38,202.96.64.68 -w
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;Tips: 根据帮助提示配置mentohust不要忘了加  &lt;code&gt;-w&lt;/code&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;为了避免每次开机都亲自连一次网，我在系统启动配置文件里，增加自动执行联网动作的命令：&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ vi /etc/rc.local&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;在最后一行的&lt;code&gt;exit 0&lt;/code&gt;之前添加:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;echo 你的密码 | sudo -S mentohust&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;ok，这样在开机后就会自动联网了&lt;/p&gt;
+</description>
+        <pubDate>2016-03-21 00:00:00 +0800</pubDate>
+        <link>http://imtim12138.github.io/tools/2016/03/21/ruijie.html</link>
+        <guid isPermaLink="true">http://imtim12138.github.io/tools/2016/03/21/ruijie.html</guid>
+        
+        
+        <category>tools</category>
+        
+      </item>
+    
+      <item>
+        <title>jekyll生成我的静态博客</title>
+        <description>&lt;h1 id=&quot;jekyll&quot;&gt;一步步用jekyll生成文章页面&lt;/h1&gt;
+
+&lt;p&gt;终于搭完了 &lt;code&gt;ruby-gem&amp;amp;DevKit + jekyll + git&lt;/code&gt; 的博客环境，有点曲折。而生成站点之后发现，想读懂这么多高层次的代码很难，看的少导致很不习惯。索性查查教程，总结一下工具的使用方法，顺便了解下jekyll的原理。&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;搭建环境&lt;/h2&gt;
+
+&lt;p&gt;以前在windows上用gcc的时候安装了&lt;code&gt;MinGW&lt;/code&gt;，在用git时安装了&lt;code&gt;git-bush&lt;/code&gt;（也是基于&lt;code&gt;MinGW&lt;/code&gt;）。此番需要安装&lt;code&gt;ruby+DevKit&lt;/code&gt;也不很麻烦。&lt;/p&gt;
+
+&lt;p&gt;安装&lt;code&gt;ruby&lt;/code&gt;要注意版本，我装的是&lt;code&gt;WinX64+MinGW&lt;/code&gt;和&lt;code&gt;DevKit-MinGW64&lt;/code&gt;。在setup &lt;code&gt;DevKit&lt;/code&gt;时注意配置好&lt;code&gt;Ruby&lt;/code&gt;所在路径。&lt;/p&gt;
+
+&lt;p&gt;为&lt;code&gt;ruby&lt;/code&gt;的&lt;code&gt;gem&lt;/code&gt;更换淘宝国内服务器source时报错了，估计是餠子在学校这个地理原因，无奈只好翻墙连Amazon的服务器，好在jekyll和其它的依赖文件都不大。&lt;/p&gt;
+
+&lt;p&gt;上述装好后，浏览下&lt;code&gt;_config.yml&lt;/code&gt;里面还需要什么，再去一个一个&lt;code&gt;gem&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;windows下受不了命令行点阵字符的同学,可以试试大名鼎鼎的&lt;code&gt;cmder&lt;/code&gt;或小巧的&lt;code&gt;consola2&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;jekyllhttpjekyllbootcsscomdocsstructure&quot;&gt;&lt;a href=&quot;http://jekyll.bootcss.com/docs/structure/&quot;&gt;jekyll目录结构&lt;/a&gt;&lt;/h2&gt;
+
+&lt;dl&gt;
+  &lt;dt&gt;涉及文章发布更新的主要文件&lt;/dt&gt;
+  &lt;dd&gt;&lt;code&gt;_posts&lt;/code&gt; 文章为转换成网页前原始文件存储的地方&lt;/dd&gt;
+  &lt;dd&gt;&lt;code&gt;_layouts&lt;/code&gt; 模板文件定义文章的显示效果,文章是内容,这个对文章进行各种安排&lt;/dd&gt;
+  &lt;dd&gt;&lt;code&gt;_includes&lt;/code&gt; 包含需要重用内容的路径&lt;/dd&gt;
+  &lt;dd&gt;&lt;code&gt;css , images , favicon.ico , CNAME&lt;/code&gt; 这些特定用途文件则直接拷贝输出到&lt;code&gt;＿site&lt;/code&gt;&lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;h2 id=&quot;jekyllhttpjekyllbootcsscomdocsusage&quot;&gt;&lt;a href=&quot;http://jekyll.bootcss.com/docs/usage/&quot;&gt;jekyll命令&lt;/a&gt;&lt;/h2&gt;
+
+&lt;dl&gt;
+  &lt;dt&gt;常用的jekyll命令就是&lt;/dt&gt;
+  &lt;dd&gt;&lt;code&gt;jekyll build&lt;/code&gt; 编译（build可简写为b）&lt;/dd&gt;
+  &lt;dd&gt;&lt;code&gt;jekyll serve&lt;/code&gt; 运行开发服务器（server可简写为s）&lt;/dd&gt;
+  &lt;dd&gt;&lt;code&gt;jekyll clean&lt;/code&gt; 清除所有生成的文件&lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;写文章或者开发时，一切对_site有关的更改都jekyll都会自动生成，在编辑器中做出储存动作后刷新浏览器就好了。
+而对_config.yml的更改需要重新build。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;开始写博客&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://kramdown.gettalong.org/quickref.html&quot;&gt;kramdown解析器语法&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://ju.outofmemory.cn/entry/149460&quot;&gt;GFM语法糖&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://jekyll.bootcss.com/docs/frontmatter/&quot;&gt;YAML模板文件头&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;写在被jekyll读取的文件头部定义YAML信息，包含各种变量，使静态页面信息可以在每次编译时有规则地变动。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://jekyll.bootcss.com/docs/configuration/&quot;&gt;&lt;code&gt;_config.yml&lt;/code&gt;配置&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/variables/&quot;&gt;常用变量&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://jekyll.bootcss.com/docs/templates/&quot;&gt;模板过滤器&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;添加主页元素&lt;/h2&gt;
+
+&lt;p&gt;在主页中添加遍历posts的代码，设置分页并把流的布局改变成喜欢的样式(这个我就不会了)，都是模板的功劳，有机会还是要多学学高抽象层的语言。&lt;/p&gt;
+
+&lt;p&gt;这是jekyll主题作者的实现（看似很好懂的样子，然而我不敢改）：&lt;/p&gt;
+
+&lt;div&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;ul&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;class&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;post-list&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  \{\% for post in paginator.posts \%\}
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;class&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;post-link&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#b48&quot;&gt;href&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;\{\{ post.url | prepend: site.baseurl \}\}&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;gt;&lt;/span&gt;\{\{ post.title \}\}&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;class&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;post-meta&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;gt;&lt;/span&gt;\{\{ post.date | date: &amp;quot;%b %-d, %Y&amp;quot; \}\}&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;class&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;post-excerpt&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;        \{\{ post.excerpt \}\}
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;          &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;class&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;post-link&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt; &lt;span style=&quot;color:#b48&quot;&gt;href&lt;/span&gt;=&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;\{\{ post.url | prepend: site.baseurl \}\}&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;gt;&lt;/span&gt;Read More &lt;span style=&quot;color:#800;font-weight:bold&quot;&gt;&amp;amp;raquo;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;        &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;      &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n18&quot; name=&quot;n18&quot;&gt;18&lt;/a&gt;&lt;/span&gt;  \{\% endfor \%\}
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n19&quot; name=&quot;n19&quot;&gt;19&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#070;font-weight:bold&quot;&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;就是实现了这两个功能：
+* 时间轴归档
+* 分类检索&lt;/p&gt;
+
+&lt;p&gt;PS：下次再看好了…快递也忘取了..打球去.&lt;/p&gt;
+</description>
+        <pubDate>2016-03-19 00:00:00 +0800</pubDate>
+        <link>http://imtim12138.github.io/jekyll/2016/03/19/environment.html</link>
+        <guid isPermaLink="true">http://imtim12138.github.io/jekyll/2016/03/19/environment.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+      </item>
+    
+      <item>
+        <title>Welcome to Jekyll and EasyBook</title>
+        <description>&lt;p&gt;You’ll find this post in your &lt;code&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;GitHub Flavored Markdown is supported.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ruby
+def print_hi(name)
+  puts &quot;Hi, #{name}&quot;
+end
+print_hi('Tom')
+#=&amp;gt; prints 'Hi, Tom' to STDOUT.
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;easybook-advanced-functions&quot;&gt;EasyBook Advanced Functions&lt;/h2&gt;
+
+&lt;p&gt;You are using &lt;a href=&quot;https://github.com/laobubu/jekyll-theme-EasyBook&quot;&gt;EasyBook&lt;/a&gt; the template from &lt;a href=&quot;http://laobubu.net&quot;&gt;laobubu.net&lt;/a&gt;. Therefore some features are supported now:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Pagination&lt;/strong&gt; is enabled.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Disqus&lt;/strong&gt; or &lt;strong&gt;多说&lt;/strong&gt; is ready.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;TOC&lt;/strong&gt; for posts is enabled.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Profile&lt;/strong&gt; including your links and avatar on the sidebar.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;And more…&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Tips:&lt;/strong&gt; You can disable Disqus or 多说 on posts/pages by adding &lt;code&gt;nocomments: true&lt;/code&gt; into &lt;a href=&quot;http://jekyllrb.com/docs/frontmatter/&quot;&gt;YAML Front Matter&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;EasyBook uses upaiyun CDN to make everyone lncluding Chinese visitors feel speedy. You can find it in &lt;code&gt;_includes/footer.html&lt;/code&gt; and change it to your favorite CDN like Google CDN.&lt;/p&gt;
+
+&lt;h2 id=&quot;support-me-by&quot;&gt;Support me by…&lt;/h2&gt;
+
+&lt;h3 id=&quot;add-a-link&quot;&gt;Add a link&lt;/h3&gt;
+
+&lt;p&gt;EasyBook does not make the footer heavy; the link to theme could be on &lt;code&gt;about.md&lt;/code&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;This website is using &lt;a href=&quot;http://laobubu.net&quot;&gt;laobubu&lt;/a&gt;’s theme: &lt;a href=&quot;https://github.com/laobubu/jekyll-theme-EasyBook&quot;&gt;EasyBook&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;donate-paypal-or-&quot;&gt;Donate (PayPal or 支付宝)&lt;/h3&gt;
+
+&lt;p&gt;That’s the best :smile:&lt;/p&gt;
+
+&lt;p&gt;Please visit &lt;a href=&quot;http://laobubu.net/donate.html&quot;&gt;http://laobubu.net/donate.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;star-and-fork-on-github-free&quot;&gt;Star and Fork on GitHub (free)&lt;/h3&gt;
+
+&lt;p&gt;Not going to donate? That’s okay. You can also send out your precious star &lt;a href=&quot;https://github.com/laobubu/jekyll-theme-EasyBook&quot;&gt;on GitHub&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;and-here-we-go&quot;&gt;And Here We Go&lt;/h2&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://github.com/jekyll/jekyll-help&quot;&gt;Jekyll’s dedicated Help repository&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>2014-12-30 17:00:13 +0800</pubDate>
+        <link>http://imtim12138.github.io/jekyll/2014/12/30/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://imtim12138.github.io/jekyll/2014/12/30/welcome-to-jekyll.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+      </item>
+    
+      <item>
+        <title>Style Test</title>
+        <description>&lt;p&gt;This is just a style test post, filled with LoremIpsue. Feel free to delete the file.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://lorempixel.com/400/200/&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;lorem-ipsum-dolor&quot;&gt;Lorem ipsum dolor&lt;/h1&gt;
+
+&lt;p&gt;Sit amet, consectetur adipiscing elit. Phasellus nisi odio, scelerisque vitae volutpat non, facilisis non erat. In gravida placerat pulvinar. Maecenas ac pretium sem. In consectetur nulla leo, ut maximus nisi volutpat eget. Vestibulum vitae malesuada risus, egestas placerat felis. In sed sollicitudin elit. Sed bibendum porttitor dui.&lt;/p&gt;
+
+&lt;h2 id=&quot;condimentum-mauris-accumsan&quot;&gt;Condimentum mauris Accumsan&lt;/h2&gt;
+
+&lt;p&gt;Eu. Suspendisse scelerisque, orci vel elementum accumsan, sem turpis congue justo, et vulputate lacus orci vel felis. Pellentesque at gravida felis, vitae pretium erat. Pellentesque convallis mi vitae lectus semper, quis pellentesque lectus tristique.&lt;/p&gt;
+
+&lt;h2 id=&quot;duis-a-nibh-in&quot;&gt;Duis a nibh in&lt;/h2&gt;
+
+&lt;p&gt;Consectetur ultrices. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Vivamus placerat, tortor et aliquam porttitor, risus mi dapibus neque, vitae vulputate urna.
+– Lorem&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Apurus vel sapien. Fusce at condimentum nibh.&lt;/p&gt;
+
+&lt;h3 id=&quot;donec-ut-urna&quot;&gt;Donec ut urna&lt;/h3&gt;
+
+&lt;p&gt;A dolor rhoncus posuere vel porttitor tortor. Integer ex lacus, sagittis ac tellus et, laoreet condimentum massa.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://lorempixel.com/400/400/&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Aliquam tempor pharetra lacus, vel bibendum purus dapibus nec. Integer hendrerit massa ut libero euismod, id gravida neque facilisis.&lt;/p&gt;
+
+&lt;h2 id=&quot;nunc-nec&quot;&gt;Nunc nec&lt;/h2&gt;
+
+&lt;p&gt;Karan justo id turpis auctor pharetra. Fusce pretium ornare facilisis. Aliquam eget scelerisque ex, eu volutpat leo. Proin pharetra est felis, sit amet suscipit orci mattis quis.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Etiam bibendum purus tincidunt&lt;/li&gt;
+  &lt;li&gt;As dapibus enim et, porta ligula.&lt;/li&gt;
+  &lt;li&gt;Morbi tempus, mauris sed sodales auctor, nulla erat fringilla purus, vel sodales nulla nunc sit amet purus.&lt;/li&gt;
+  &lt;li&gt;Praesent pellentesque urna et leo eleifend molestie ac ac ex.&lt;/li&gt;
+  &lt;li&gt;Ut eu sagittis metus, et malesuada libero.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam placerat mauris a libero tempus facilisis. Maecenas ut augue lacinia, ornare mi in, lobortis arcu. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis justo elit, blandit vel tincidunt ac, imperdiet ut neque.&lt;/p&gt;
+
+&lt;h1 id=&quot;class-aptent&quot;&gt;Class aptent&lt;/h1&gt;
+
+&lt;p&gt;taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam erat volutpat. Sed at semper sem. Morbi in finibus tellus. Pellentesque nec dapibus risus.&lt;/p&gt;
+
+&lt;div&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#579&quot;&gt;#include&lt;/span&gt; &lt;span style=&quot;color:#B44;font-weight:bold&quot;&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#0a8;font-weight:bold&quot;&gt;int&lt;/span&gt; main () {
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;    std::cout &amp;lt;&amp;lt; &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;Hello world!&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt; &amp;lt;&amp;lt; std::endl;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;  }
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;vitae erat non congue. Proin sagittis vitae justo at cursus. Phasellus egestas bibendum urna vel condimentum.&lt;/p&gt;
+
+&lt;h2 id=&quot;fusce-a-ullamcorper-nisl&quot;&gt;Fusce a ullamcorper nisl&lt;/h2&gt;
+
+&lt;p&gt;Pellentesque vehicula faucibus nibh, &lt;strong&gt;a pharetra odio pretium ac.&lt;/strong&gt; Mauris eget gravida orci, vitae tincidunt urna. Integer pharetra ante in porta maximus. Morbi ac arcu lacinia, posuere mauris vitae, lobortis dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae metus nibh. Cras quis malesuada nisi. Ut porttitor, ipsum vel suscipit posuere, elit purus egestas velit, ac lobortis urna orci nec mi.&lt;/p&gt;
+
+&lt;h2 id=&quot;maecenas-bibendum-nisi&quot;&gt;Maecenas bibendum nisi&lt;/h2&gt;
+
+&lt;p&gt;Aleo facilisis porttitor ac ac metus. &lt;strong&gt;Vivamus faucibus faucibus bibendum.&lt;/strong&gt; Donec efficitur consectetur erat quis porttitor. Ut id euismod nunc. Sed venenatis eleifend suscipit. Donec magna purus, porta eget enim a, ornare porttitor nibh. Cras nisl nibh, viverra vitae magna quis, hendrerit facilisis sem.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;table&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;test&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;lorem&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Praesent ultrices&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;convallis lorem&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;at sollicitudin enim&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Mauris&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;tristique cursus&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;arcu ac&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;facilisis&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Proin&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;vulputate neque lectus&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;maximus malesuada est rutrum ac. Sed blandit semper faucibus. Nam venenatis consectetur malesuada. Nulla lacus purus, ultrices ac eros porttitor, finibus sodales augue. Suspendisse tincidunt, felis in placerat euismod, libero nulla interdum nisl, commodo efficitur felis dui in libero. Integer lobortis sapien sit amet orci tristique auctor a sit amet neque. Nunc tincidunt iaculis purus eget maximus. Fusce risus justo, rutrum at magna sed, rhoncus lacinia lectus. Vivamus lobortis odio ex, ac vehicula nunc facilisis non. Aliquam fermentum diam massa. Sed cursus, nisi varius laoreet aliquet, tortor urna porta turpis, in dictum urna enim vel leo. Etiam at lacus lorem. Vivamus ornare vitae nisl vel malesuada.&lt;/p&gt;
+</description>
+        <pubDate>1970-01-01 08:00:00 +0800</pubDate>
+        <link>http://imtim12138.github.io/jekyll/1970/01/01/test.html</link>
+        <guid isPermaLink="true">http://imtim12138.github.io/jekyll/1970/01/01/test.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+      </item>
+    
+  </channel>
+</rss>

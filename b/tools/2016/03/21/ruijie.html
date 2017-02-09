@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="baidu-site-verification" content="NmSsZqiwBD" />
+
+  <title>配置锐捷校园网 « 君子如兰</title>
+  <meta name="description" content="希望不要再重复搜索同一教程。">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://imtim12138.github.io/tools/2016/03/21/ruijie.html">
+  <link rel="alternate" type="application/rss+xml" title="君子如兰" href="http://imtim12138.github.io/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="header">
+  <div class="wrapper">
+    <a class="site-title" href="/">君子如兰</a>
+    <nav class="site-nav">
+      
+        
+      
+        
+        <a class="page-link" href="/about/">关于</a>
+        
+      
+        
+        <a class="page-link" href="/category/">分类</a>
+        
+      
+        
+      
+        
+        <a class="page-link" href="/editor/">撰写</a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="col-main">
+          <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">配置锐捷校园网</h1>
+    <p class="post-meta">Mar 21, 2016</p>
+  </header>
+
+  <article class="post-content">
+    <p>在学校时间长了，配置一百遍校园网也是可能的，毕竟人家利益集团挣的都是硬钱，可不管你软件好不好用。没办法只能把linux和windows平台的mantohust配置放在这里备不时之需。</p>
+
+<p><strong>下载mentohust:</strong></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><a href="/images/MentoHUST-windows.zip">mentohust for windows</a></td>
+      <td><a href="/images/mentohust_0.3.4-1_i386.deb">mentohust for linux x86</a></td>
+      <td><a href="/images/mentohust_0.3.4-1_amd64.deb">mentohust for linux x64</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p><em>Tips: 注意平台和版本。</em></p>
+</blockquote>
+
+<h2 id="section">安装</h2>
+
+<h4 id="windows"><strong>windows：</strong></h4>
+
+<ol>
+  <li>解压后以管理员权限安装winpcap</li>
+  <li>配置账户，设置ip或预先抓好的包</li>
+</ol>
+
+<blockquote>
+  <p><em>Tips: Win8及以上的设备无法安装上面压缩包中的winpcap4_0_2，请安装较新的完全版本<a href="https://www.baidu.com/s?wd=winpcap">winpcap</a></em></p>
+</blockquote>
+
+<h4 id="linux-apt"><strong>linux (apt管理)：</strong></h4>
+
+<ol>
+  <li>先在桌面状态栏-&gt;网络菜单-&gt;编辑链接-&gt;编辑以太网有线链接、设置系统有线链接设置。比如ipv4分页中加入自己的固定ip、网关、子网掩码配置项，保存；</li>
+  <li>直接图形界面安装或在bash中path到<code>deb</code>软件包所在路径，命令<code>dpkg -i &lt;*.deb&gt;</code></li>
+  <li>命令行中输入：<code>$ mentohust -h</code></li>
+</ol>
+
+<p>我的配置命令：</p>
+
+<p><code>bash
+$ sudo mentohust -u15609844270 -p94nbnooneof -neth0 \
+  -i172.18.200.61 -m255.255.255.0 -g172.18.200.1    \
+  -s202.96.69.38,202.96.64.68 -w
+</code></p>
+
+<blockquote>
+  <p><em>Tips: 根据帮助提示配置mentohust不要忘了加  <code>-w</code></em></p>
+</blockquote>
+
+<p>为了避免每次开机都亲自连一次网，我在系统启动配置文件里，增加自动执行联网动作的命令：</p>
+
+<p><code>$ vi /etc/rc.local</code></p>
+
+<p>在最后一行的<code>exit 0</code>之前添加:</p>
+
+<p><code>echo 你的密码 | sudo -S mentohust</code></p>
+
+<p>ok，这样在开机后就会自动联网了</p>
+
+  </article>
+
+  
+
+
+<div class="post-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="/tools/2016/03/21/ruijie" data-title="配置锐捷校园网" data-url="http://imtim12138.github.io/tools/2016/03/21/ruijie.html"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"imtim12138"};
+      (function() {
+      	var ds = document.createElement('script');
+      	ds.type = 'text/javascript';ds.async = true;
+      	ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      	ds.charset = 'UTF-8';
+      	(document.getElementsByTagName('head')[0]
+      	 || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+
+        </div>
+        <div class="col-second">
+          <div class="col-box col-box-author">
+  <img class="avatar" src="/images/susu.png" alt="圆餠君">
+  <div class="col-box-title name">圆餠君</div>
+  <p>一只学电的程序餠子.</p>
+  <p class="contact">
+    
+    <a href="https://github.com/imtim12138">GitHub</a>
+    
+    
+    <a href="https://weibo.com/toycc2h">微博</a>
+    
+    
+    <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=4YmLjZWIjKGQkM_Cjow">Email</a>
+    
+  </p>
+</div>
+
+<div class="col-box">
+  <div class="col-box-title">最近</div>
+  <ul class="post-list">
+    
+      <li><a class="post-link" href="/MATERIAL/2016/11/20/EDA-exp.html">EDA实验资料</a></li>
+    
+      <li><a class="post-link" href="/Spit-slot/2016/09/13/god-be-thanked.html">吃LF的亏上**的当最后陷入疯狂-吐槽短期内经历Programme四大悲之二</a></li>
+    
+      <li><a class="post-link" href="/ENVIRONMENT/2016/06/04/mingw-error.html">MinGW-gcc/g++编译error：CreateProcess: No such file or directory</a></li>
+    
+      <li><a class="post-link" href="/MCU/2016/04/01/i-o-peripheral-md.html">读MCU实现各种姿势的I/O和外设访问
+程序-笔记</a></li>
+    
+      <li><a class="post-link" href="/tools/2016/03/21/ruijie.html">配置锐捷校园网</a></li>
+    
+  </ul>
+</div>
+
+<div class="col-box post-toc hide">
+  <div class="col-box-title">目录</div>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+<div class="wrapper">
+&copy; 2016 圆餠君
+</div>
+</footer>
+
+<script src="/js/easybook.js"></script>
+
+
+  </body>
+
+</html>

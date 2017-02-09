@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="baidu-site-verification" content="NmSsZqiwBD" />
+
+  <title>jekyll生成我的静态博客 « 君子如兰</title>
+  <meta name="description" content="希望不要再重复搜索同一教程。">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://imtim12138.github.io/jekyll/2016/03/19/environment.html">
+  <link rel="alternate" type="application/rss+xml" title="君子如兰" href="http://imtim12138.github.io/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="header">
+  <div class="wrapper">
+    <a class="site-title" href="/">君子如兰</a>
+    <nav class="site-nav">
+      
+        
+      
+        
+        <a class="page-link" href="/about/">关于</a>
+        
+      
+        
+        <a class="page-link" href="/category/">分类</a>
+        
+      
+        
+      
+        
+        <a class="page-link" href="/editor/">撰写</a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="col-main">
+          <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">jekyll生成我的静态博客</h1>
+    <p class="post-meta">Mar 19, 2016</p>
+  </header>
+
+  <article class="post-content">
+    <h1 id="jekyll">一步步用jekyll生成文章页面</h1>
+
+<p>终于搭完了 <code>ruby-gem&amp;DevKit + jekyll + git</code> 的博客环境，有点曲折。而生成站点之后发现，想读懂这么多高层次的代码很难，看的少导致很不习惯。索性查查教程，总结一下工具的使用方法，顺便了解下jekyll的原理。</p>
+
+<h2 id="section">搭建环境</h2>
+
+<p>以前在windows上用gcc的时候安装了<code>MinGW</code>，在用git时安装了<code>git-bush</code>（也是基于<code>MinGW</code>）。此番需要安装<code>ruby+DevKit</code>也不很麻烦。</p>
+
+<p>安装<code>ruby</code>要注意版本，我装的是<code>WinX64+MinGW</code>和<code>DevKit-MinGW64</code>。在setup <code>DevKit</code>时注意配置好<code>Ruby</code>所在路径。</p>
+
+<p>为<code>ruby</code>的<code>gem</code>更换淘宝国内服务器source时报错了，估计是餠子在学校这个地理原因，无奈只好翻墙连Amazon的服务器，好在jekyll和其它的依赖文件都不大。</p>
+
+<p>上述装好后，浏览下<code>_config.yml</code>里面还需要什么，再去一个一个<code>gem</code>。</p>
+
+<p>windows下受不了命令行点阵字符的同学,可以试试大名鼎鼎的<code>cmder</code>或小巧的<code>consola2</code></p>
+
+<h2 id="jekyllhttpjekyllbootcsscomdocsstructure"><a href="http://jekyll.bootcss.com/docs/structure/">jekyll目录结构</a></h2>
+
+<dl>
+  <dt>涉及文章发布更新的主要文件</dt>
+  <dd><code>_posts</code> 文章为转换成网页前原始文件存储的地方</dd>
+  <dd><code>_layouts</code> 模板文件定义文章的显示效果,文章是内容,这个对文章进行各种安排</dd>
+  <dd><code>_includes</code> 包含需要重用内容的路径</dd>
+  <dd><code>css , images , favicon.ico , CNAME</code> 这些特定用途文件则直接拷贝输出到<code>＿site</code></dd>
+</dl>
+
+<h2 id="jekyllhttpjekyllbootcsscomdocsusage"><a href="http://jekyll.bootcss.com/docs/usage/">jekyll命令</a></h2>
+
+<dl>
+  <dt>常用的jekyll命令就是</dt>
+  <dd><code>jekyll build</code> 编译（build可简写为b）</dd>
+  <dd><code>jekyll serve</code> 运行开发服务器（server可简写为s）</dd>
+  <dd><code>jekyll clean</code> 清除所有生成的文件</dd>
+</dl>
+
+<p>写文章或者开发时，一切对_site有关的更改都jekyll都会自动生成，在编辑器中做出储存动作后刷新浏览器就好了。
+而对_config.yml的更改需要重新build。</p>
+
+<h2 id="section-1">开始写博客</h2>
+
+<ul>
+  <li><a href="http://kramdown.gettalong.org/quickref.html">kramdown解析器语法</a></li>
+  <li><a href="http://ju.outofmemory.cn/entry/149460">GFM语法糖</a></li>
+  <li><a href="http://jekyll.bootcss.com/docs/frontmatter/">YAML模板文件头</a></li>
+</ul>
+
+<p>写在被jekyll读取的文件头部定义YAML信息，包含各种变量，使静态页面信息可以在每次编译时有规则地变动。</p>
+
+<ul>
+  <li><a href="http://jekyll.bootcss.com/docs/configuration/"><code>_config.yml</code>配置</a></li>
+  <li><a href="https://jekyllrb.com/docs/variables/">常用变量</a></li>
+  <li><a href="http://jekyll.bootcss.com/docs/templates/">模板过滤器</a></li>
+</ul>
+
+<h2 id="section-2">添加主页元素</h2>
+
+<p>在主页中添加遍历posts的代码，设置分页并把流的布局改变成喜欢的样式(这个我就不会了)，都是模板的功劳，有机会还是要多学学高抽象层的语言。</p>
+
+<p>这是jekyll主题作者的实现（看似很好懂的样子，然而我不敢改）：</p>
+
+<div><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">&lt;ul</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">post-list</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  \{\% for post in paginator.posts \%\}
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    <span style="color:#070;font-weight:bold">&lt;li&gt;</span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>      <span style="color:#070;font-weight:bold">&lt;h2&gt;</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        <span style="color:#070;font-weight:bold">&lt;a</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">post-link</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        <span style="color:#b48">href</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">\{\{ post.url | prepend: site.baseurl \}\}</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>\{\{ post.title \}\}<span style="color:#070;font-weight:bold">&lt;/a&gt;</span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>      <span style="color:#070;font-weight:bold">&lt;/h2&gt;</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>      <span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">post-meta</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>\{\{ post.date | date: &quot;%b %-d, %Y&quot; \}\}<span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>      <span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">post-excerpt</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>        \{\{ post.excerpt \}\}
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>        <span style="color:#070;font-weight:bold">&lt;p&gt;</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>          <span style="color:#070;font-weight:bold">&lt;a</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">post-link</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">href</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">\{\{ post.url | prepend: site.baseurl \}\}</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>Read More <span style="color:#800;font-weight:bold">&amp;raquo;</span><span style="color:#070;font-weight:bold">&lt;/a&gt;</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>        <span style="color:#070;font-weight:bold">&lt;/p&gt;</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>      <span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>    <span style="color:#070;font-weight:bold">&lt;/li&gt;</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>  \{\% endfor \%\}
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span><span style="color:#070;font-weight:bold">&lt;/ul&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<p>就是实现了这两个功能：
+* 时间轴归档
+* 分类检索</p>
+
+<p>PS：下次再看好了…快递也忘取了..打球去.</p>
+
+  </article>
+
+  
+
+
+<div class="post-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="/jekyll/2016/03/19/environment" data-title="jekyll生成我的静态博客" data-url="http://imtim12138.github.io/jekyll/2016/03/19/environment.html"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"imtim12138"};
+      (function() {
+      	var ds = document.createElement('script');
+      	ds.type = 'text/javascript';ds.async = true;
+      	ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      	ds.charset = 'UTF-8';
+      	(document.getElementsByTagName('head')[0]
+      	 || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+
+        </div>
+        <div class="col-second">
+          <div class="col-box col-box-author">
+  <img class="avatar" src="/images/susu.png" alt="圆餠君">
+  <div class="col-box-title name">圆餠君</div>
+  <p>一只学电的程序餠子.</p>
+  <p class="contact">
+    
+    <a href="https://github.com/imtim12138">GitHub</a>
+    
+    
+    <a href="https://weibo.com/toycc2h">微博</a>
+    
+    
+    <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=4YmLjZWIjKGQkM_Cjow">Email</a>
+    
+  </p>
+</div>
+
+<div class="col-box">
+  <div class="col-box-title">最近</div>
+  <ul class="post-list">
+    
+      <li><a class="post-link" href="/MATERIAL/2016/11/20/EDA-exp.html">EDA实验资料</a></li>
+    
+      <li><a class="post-link" href="/Spit-slot/2016/09/13/god-be-thanked.html">吃LF的亏上**的当最后陷入疯狂-吐槽短期内经历Programme四大悲之二</a></li>
+    
+      <li><a class="post-link" href="/ENVIRONMENT/2016/06/04/mingw-error.html">MinGW-gcc/g++编译error：CreateProcess: No such file or directory</a></li>
+    
+      <li><a class="post-link" href="/MCU/2016/04/01/i-o-peripheral-md.html">读MCU实现各种姿势的I/O和外设访问
+程序-笔记</a></li>
+    
+      <li><a class="post-link" href="/tools/2016/03/21/ruijie.html">配置锐捷校园网</a></li>
+    
+  </ul>
+</div>
+
+<div class="col-box post-toc hide">
+  <div class="col-box-title">目录</div>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+<div class="wrapper">
+&copy; 2016 圆餠君
+</div>
+</footer>
+
+<script src="/js/easybook.js"></script>
+
+
+  </body>
+
+</html>

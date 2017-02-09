@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="baidu-site-verification" content="NmSsZqiwBD" />
+
+  <title>读MCU实现各种姿势的I/O和外设访问
+程序-笔记 « 君子如兰</title>
+  <meta name="description" content="希望不要再重复搜索同一教程。">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://imtim12138.github.io/MCU/2016/04/01/i-o-peripheral-md.html">
+  <link rel="alternate" type="application/rss+xml" title="君子如兰" href="http://imtim12138.github.io/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="header">
+  <div class="wrapper">
+    <a class="site-title" href="/">君子如兰</a>
+    <nav class="site-nav">
+      
+        
+      
+        
+        <a class="page-link" href="/about/">关于</a>
+        
+      
+        
+        <a class="page-link" href="/category/">分类</a>
+        
+      
+        
+      
+        
+        <a class="page-link" href="/editor/">撰写</a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="col-main">
+          <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">读MCU实现各种姿势的I/O和外设访问
+程序-笔记</h1>
+    <p class="post-meta">Apr 1, 2016</p>
+  </header>
+
+  <article class="post-content">
+    <p>以前零零碎碎地看I/O和外设访问的程序库，总是形不成套路，最近又看了些框架清晰的书和程序，决心把这方面总结下，T_T记性不好，总得备“不时之需”。</p>
+
+<h1 id="arm-span-stylecolor-purplecrotex--m-span-">ARM <span style="color: purple">Crotex- M </span> 风格的接口实现</h1>
+<p>通过使用指针式访问内存某些特定地址，可以实现对特定外设的寄存器访问。外设的地址映射与硬件有关，而构造的对应外设的数据结构也取决于系统存储器中外设映射地址的分布状态。</p>
+
+<p>ARM定义的映射外设寄存器的内存地址：</p>
+
+<p><img src="/images/memary.png" alt="memary" /></p>
+
+<h2 id="section">引例</h2>
+
+<p>先引一个Crotex-M权威指南上,展现原理的例子：</p>
+
+<p><strong>1.定义指向0x40010800、0x40010804、0x40010808三个字的指针，并直接添加*，用于给特定地址直接赋值。</strong></p>
+
+<div><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>/* STN32F 100RBT6BeGPIO A 端口配置寄存器低字 */
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>#define GPIOA_CRL  ( * ((volatile unsigned long * ) (0x40010800)))
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>/* STN32F 100RBT6BeGPIO A 端口配置寄存器高字 */
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>#define GPIOA_CRH  ( * ((volatile unsigned long * ) (0x40010804)))
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>/* STN32F 100RBT6BeGPIO A 端口输入数据寄存器 */
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>#define GPIOA_IDR  ( * ((volatile unsigned long * ) (0x40010808)))
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>//...
+</pre></div>
+</div>
+</div>
+<blockquote>
+  <p>Tips:最里层两个同级括号将整数强制转换成<code>volatile unsigned long</code>型指针，最外层是为了取指针直接给指向的地址赋值。</p>
+</blockquote>
+
+<p><strong>2.操纵寄存器</strong></p>
+
+<div><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#777">/* 复位GPIOA */</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#088;font-weight:bold">void</span> GPIOA_reset(<span style="color:#088;font-weight:bold">void</span>) {  
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  GPIOA_CRL = <span style="color:#00D">0</span>;<span style="color:#777">//位0~7，都设置为模拟输入</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>  GPIOA_CRL = <span style="color:#00D">0</span>;<span style="color:#777">//位8~15，都设置为模拟输入</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>  GPIOA_ODR = <span style="color:#00D">0</span>;<span style="color:#777">//默认输出0</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>  <span style="color:#080;font-weight:bold">return</span>;
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>}
+</pre></div>
+</div>
+</div>
+
+<blockquote>
+  <p>Tips：直接操纵少量寄存器这样非常好用，但是对于大量寄存器的操作这样就有问题了</p>
+</blockquote>
+
+<h2 id="keilspan-stylecolor-purplestm32f1xxdfpspanspan-stylecolor-red-usartspan">Keil.<span style="color: purple">STM32F_1xx_DFP</span><span style="color: red"> USART</span></h2>
+
+<p>对于较大量的寄存器操作，举串口做的例子(源码自设备头<code>stm32f10x.h</code>和驱动库<code>stm32f10x_usart.c</code>等文件)：</p>
+
+<p><strong>1.一些需要常用的接口外设的基地址映射不是直接定义的，而是由某基地址再加偏移地址得到的。</strong></p>
+
+<p>如<code>STM32F1XX_DFP</code>中<code>USART1</code>在内存中映射的方式：</p>
+
+<div><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>/*!&lt; Peripheral base address in the alias region */
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>#define PERIPH_BASE           ((uint32_t)0x40000000)
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>//...
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>#define APB2PERIPH_BASE       (PERIPH_BASE + 0x10000)
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>//...
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>#define USART1_BASE           (APB2PERIPH_BASE + 0x3800)
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>//...
+</pre></div>
+</div>
+</div>
+
+<p><strong>2.可以看到地址定义在上图的Peripheral位段区。</strong></p>
+
+<ul>
+  <li>使用16位偏移地址可以不用每次都存储32位地址常量，减小程序体积。</li>
+</ul>
+
+<p><strong>3.为多个相同的<code>USARTx</code>外设构造相同的数据结构，创建可复用的代码，这样的接口不仅仅减小代码体积，还能以一个实例同时初始化或配置多个同种外设：</strong></p>
+
+<div><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>typedef struct
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>{
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  __IO uint16_t SR;//状态寄存器
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  uint16_t  RESERVED0;
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  __IO uint16_t DR;//数据寄存器
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  uint16_t  RESERVED1;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  __IO uint16_t BRR;//波特比率寄存器
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  uint16_t  RESERVED2;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  __IO uint16_t CR1;//控制寄存器1
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  uint16_t  RESERVED3;
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  __IO uint16_t CR2;//控制寄存器2
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  uint16_t  RESERVED4;
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  __IO uint16_t CR3;//控制寄存器3
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  uint16_t  RESERVED5;
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  __IO uint16_t GTPR;//保护时间和预分频寄存器
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  uint16_t  RESERVED6;
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>} USART_TypeDef;
+</pre></div>
+</div>
+</div>
+
+<p><strong>4.”<code>__IO</code>“是CMSIS标准头中的定义,只是给变量的类型加以限定,用到了两个类型限定符<code>const</code>和<code>volatile</code></strong></p>
+
+<p><code>scala
+#ifdef _cplusplus //对于ISO-C...我们不去管它
+  #define _I volatile /* !&lt;定义"只读"权限 */
+#else
+  #define _I volatile const/* !&lt;定义"只读"权限 */
+#endif
+#define _O volatile /* !&lt;定义"只写"权限 */
+#define _IO voiatile /* !&lt;定义"读/写"权限 */
+</code></p>
+
+<p><strong>5.USART发送一个字的函数–例子1:</strong></p>
+
+<p><strong><code>stm32f10x_usart.c</code>源文件中</strong></p>
+
+<p>```cpp
+void USART_SendData(USART_TypeDef* USARTx, uint16_t Data)
+{
+  /* Check the parameters */
+  assert_param(IS_USART_ALL_PERIPH(USARTx));
+  assert_param(IS_USART_DATA(Data));</p>
+
+<p>/* Transmit Data */
+  USARTx-&gt;DR = (Data &amp; (uint16_t)0x01FF);
+}
+//…
+```
+&gt; Tips:<span style="color: green">DR</span>(数据寄存器的后9位[0-8]是TXD\RXD\校验等等数据的存储域)</p>
+
+<p><strong>6.位段获取USART各种状态位–例子2:</strong></p>
+
+<p>软件查询结构体元素<code>UARTx-&gt;SR</code>的位读取结果,实现访问</p>
+
+<p>```cpp
+/**
+  * @brief  Checks whether the specified USART flag is set or not.
+  * @param  USARTx: Select the USART or the UART peripheral.
+  *   This parameter can be one of the following values:
+  *   USART1, USART2, USART3, UART4 or UART5.
+  * @param  USART_FLAG: specifies the flag to check.
+  *   This parameter can be one of the following values:
+  *     @arg USART_FLAG_CTS:  CTS Change flag (not available for UART4 and UART5)
+  *     @arg USART_FLAG_LBD:  LIN Break detection flag
+  *     @arg USART_FLAG_TXE:  Transmit data register empty flag
+  *     @arg USART_FLAG_TC:   Transmission Complete flag
+  *     @arg USART_FLAG_RXNE: Receive data register not empty flag
+  *     @arg USART_FLAG_IDLE: Idle Line detection flag
+  *     @arg USART_FLAG_ORE:  OverRun Error flag
+  *     @arg USART_FLAG_NE:   Noise Error flag
+  *     @arg USART_FLAG_FE:   Framing Error flag
+  *     @arg USART_FLAG_PE:   Parity Error flag
+  * @retval The new state of USART_FLAG (SET or RESET).
+  <em>/
+FlagStatus USART_GetFlagStatus(USART_TypeDef</em> USARTx, uint16_t USART_FLAG)
+{
+  FlagStatus bitstatus = RESET;
+  /* Check the parameters <em>/
+  assert_param(IS_USART_ALL_PERIPH(USARTx));
+  assert_param(IS_USART_FLAG(USART_FLAG));
+  /</em> The CTS flag is not available for UART4 and UART5 */
+  if (USART_FLAG == USART_FLAG_CTS)
+  {
+    assert_param(IS_USART_123_PERIPH(USARTx));
+  }  </p>
+
+<p>if ((USARTx-&gt;SR &amp; USART_FLAG) != (uint16_t)RESET)
+  {
+    bitstatus = SET;
+  }
+  else
+  {
+    bitstatus = RESET;
+  }
+  return bitstatus;
+}
+//…
+```</p>
+
+<p><strong>stm32f10x_usart.h</strong>头文件中定义了多个标志位</p>
+
+<p>状态寄存器的位定义:</p>
+
+<p><img src="/images/USART_SR.png" alt="UARTx_DR" /></p>
+
+<p>```scala
+/** @defgroup USART_Flags
+  * @{
+  */</p>
+
+<h1 id="define-usartflagcts-----------------------uint16t0x0200">define USART_FLAG_CTS                       ((uint16_t)0x0200)</h1>
+<p>#define USART_FLAG_LBD                       ((uint16_t)0x0100)
+#define USART_FLAG_TXE                       ((uint16_t)0x0080)
+#define USART_FLAG_TC                        ((uint16_t)0x0040)
+#define USART_FLAG_RXNE                      ((uint16_t)0x0020)
+#define USART_FLAG_IDLE                      ((uint16_t)0x0010)
+#define USART_FLAG_ORE                       ((uint16_t)0x0008)
+#define USART_FLAG_NE                        ((uint16_t)0x0004)
+#define USART_FLAG_FE                        ((uint16_t)0x0002)
+#define USART_FLAG_PE                        ((uint16_t)0x0001)
+#define IS_USART_FLAG(FLAG) (((FLAG) == USART_FLAG_PE) || ((FLAG) == USART_FLAG_TXE) || \
+                             ((FLAG) == USART_FLAG_TC) || ((FLAG) == USART_FLAG_RXNE) || \
+                             ((FLAG) == USART_FLAG_IDLE) || ((FLAG) == USART_FLAG_LBD) || \
+                             ((FLAG) == USART_FLAG_CTS) || ((FLAG) == USART_FLAG_ORE) || \
+                             ((FLAG) == USART_FLAG_NE) || ((FLAG) == USART_FLAG_FE))
+//…
+#define IS_USART_DATA(DATA) ((DATA) &lt;= 0x1FF)
+```</p>
+
+<p><strong>7.外设寄存器详细位定义,用于驱动函数操纵外设具体细节:</strong></p>
+
+<ul>
+  <li>
+    <p>对外设寄存器的部分位或位域的访问，通常通过<code>位段</code>操作来实现。</p>
+  </li>
+  <li>
+    <p>硬件位段操作的原子性，决定不会再因为与中断等异常共享变量而丢失数据。原因就是，中断一定会在位段操作之后再被响应。</p>
+  </li>
+  <li>
+    <p>具体的C程序实现存储器位段操作的过程是，直接通过访问位段别名，来操作存储器位段，支持位段操作的寄存器(即<code>bit-band</code>)除了自身的地址外，每一位又被赋予另外的地址，以供位段操作,编址示意见文章开头图。</p>
+  </li>
+</ul>
+
+<p>```scala
+//没有在stm32f1xx_DFP里找到运用位段特性的例子，只好看一个权威指南上的例子：</p>
+
+<p>/<em>最简单的方法就是分别直接声明寄存器地址和位段地址</em>/
+#define DEVICE_REG0 * ((volatile unsigned long * ) (0x40000000) )
+#define DEVICE_REG0_BIT0 * ((volatile unsigned long * ) (0x42000000) )
+#define DEVICE_REG0_BIT1 * ((volatile unsigned long * ) (0x42000004) )
+//…
+DEVICE_REG0 = 0xAB; //这个姿势是直接使用寄存器地址，访问整个寄存器
+//…
+DEVICE_REG0 = DEVICE_REG0 | 0x2; //此处没使用位段方式，以赋值方式设置寄存器第1位
+//…
+DEVICE_REG0_BIT1 = 0x1; //利用位段特性使用位段别名设置第1位
+```</p>
+
+<ul>
+  <li>这样的位段操作适用于时序要求精确的场合，可确保不被中断异常影响。而且据论坛网友说又有
+“10倍”的速度提升。这种东西还是有时间测测再说XD</li>
+</ul>
+
+<h2 id="freescale-kinetis-60-fxdn-mcu--io">Freescale kinetis 60 FX/DN MCU 山外参考代码 I/O实例</h2>
+
+<ul>
+  <li>看了点K60山外库的实现，觉得逻辑真强，宏用的很多，对很多细节都有点懵</li>
+</ul>
+
+<h1 id="span-stylecolor-redspan"><span style="color: red">待续</span></h1>
+
+<h2 id="keilstm32f1xxdfp">Keil.stm32f1xx_DFP中的其它例子</h2>
+
+<h3 id="fsmc">FSMC</h3>
+
+<h3 id="spiiic">SPI和IIC</h3>
+
+<h3 id="gpio">GPIO</h3>
+
+<h1 id="ccsmsp-ware">CCS.MSP-Ware中的例子</h1>
+
+<p>买的msp432p401r的开发版比较厉害，固件库已经固化到flash，当在自己工程中调用固
+件库的代码时，编译器不产生对应程序，而是直接调用已经存在的程序的入口。这个套路，明显就是
+为现在烂街的创客准备的，做demo专用。</p>
+
+<p>先看这个芯片的devices头有关io的定义：</p>
+
+<h1 id="controlsuite-c2000-mcu">controlSUITE-C2000-MCU中的例子</h1>
+
+<p>饼子的C2000系列mcu是顺承着msp432买的。也就是同样超级火的tms320f28377s开发板，这个板子的io
+方式很多，多了CAN总线控制器，还有usb2.0全速控制器，配合CLA等高级东东，数据io和外设
+访问更加复杂。</p>
+
+  </article>
+
+  
+
+
+<div class="post-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="/MCU/2016/04/01/i-o-peripheral-md" data-title="读MCU实现各种姿势的I/O和外设访问
+程序-笔记" data-url="http://imtim12138.github.io/MCU/2016/04/01/i-o-peripheral-md.html"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"imtim12138"};
+      (function() {
+      	var ds = document.createElement('script');
+      	ds.type = 'text/javascript';ds.async = true;
+      	ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      	ds.charset = 'UTF-8';
+      	(document.getElementsByTagName('head')[0]
+      	 || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+
+        </div>
+        <div class="col-second">
+          <div class="col-box col-box-author">
+  <img class="avatar" src="/images/susu.png" alt="圆餠君">
+  <div class="col-box-title name">圆餠君</div>
+  <p>一只学电的程序餠子.</p>
+  <p class="contact">
+    
+    <a href="https://github.com/imtim12138">GitHub</a>
+    
+    
+    <a href="https://weibo.com/toycc2h">微博</a>
+    
+    
+    <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=4YmLjZWIjKGQkM_Cjow">Email</a>
+    
+  </p>
+</div>
+
+<div class="col-box">
+  <div class="col-box-title">最近</div>
+  <ul class="post-list">
+    
+      <li><a class="post-link" href="/MATERIAL/2016/11/20/EDA-exp.html">EDA实验资料</a></li>
+    
+      <li><a class="post-link" href="/Spit-slot/2016/09/13/god-be-thanked.html">吃LF的亏上**的当最后陷入疯狂-吐槽短期内经历Programme四大悲之二</a></li>
+    
+      <li><a class="post-link" href="/ENVIRONMENT/2016/06/04/mingw-error.html">MinGW-gcc/g++编译error：CreateProcess: No such file or directory</a></li>
+    
+      <li><a class="post-link" href="/MCU/2016/04/01/i-o-peripheral-md.html">读MCU实现各种姿势的I/O和外设访问
+程序-笔记</a></li>
+    
+      <li><a class="post-link" href="/tools/2016/03/21/ruijie.html">配置锐捷校园网</a></li>
+    
+  </ul>
+</div>
+
+<div class="col-box post-toc hide">
+  <div class="col-box-title">目录</div>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+<div class="wrapper">
+&copy; 2016 圆餠君
+</div>
+</footer>
+
+<script src="/js/easybook.js"></script>
+
+
+  </body>
+
+</html>

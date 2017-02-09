@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="baidu-site-verification" content="NmSsZqiwBD" />
+
+  <title>EDA实验资料 « 君子如兰</title>
+  <meta name="description" content="希望不要再重复搜索同一教程。">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://imtim12138.github.io/MATERIAL/2016/11/20/EDA-exp.html">
+  <link rel="alternate" type="application/rss+xml" title="君子如兰" href="http://imtim12138.github.io/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="header">
+  <div class="wrapper">
+    <a class="site-title" href="/">君子如兰</a>
+    <nav class="site-nav">
+      
+        
+      
+        
+        <a class="page-link" href="/about/">关于</a>
+        
+      
+        
+        <a class="page-link" href="/category/">分类</a>
+        
+      
+        
+      
+        
+        <a class="page-link" href="/editor/">撰写</a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="col-main">
+          <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">EDA实验资料</h1>
+    <p class="post-meta">Nov 20, 2016</p>
+  </header>
+
+  <article class="post-content">
+    <p>令人充满恐惧的不是蜜汁缩进，而是不能自动补全还强迫用DOS的小霸王programme主机。</p>
+
+<h1 id="section">直接下载实验文件</h1>
+
+<table>
+  <tbody>
+    <tr>
+      <td>VHDL源文件</td>
+      <td><a href="/images/EDA-exp.zip">实验一、二、三</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="section-1">实验一：2选1数据选择器</h1>
+
+<p>文件名<code>MUX21A.vhd</code></p>
+
+<p>```sql
+ENTITY MUC21A IS
+ PORT ( a, b, s: IN BIT;
+              y: OUT BIT);
+END ENTITY MUX21A;
+ARCHITECTURE one OF MUX21A IS
+  BEGIN
+    PROCESS (a,b,s)
+      BEGIN
+        IF s = ‘0’ THEN y &lt;= a; ELSE y &lt;= b;
+        END IF;
+    END PROCESS;
+  END ARCHITECTURE one;</p>
+
+<p>```</p>
+
+<h1 id="section-2">实验二： 加法计数器</h1>
+
+<p>文件名<code>CNT10.vhd</code></p>
+
+<p>```sql
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
+ENTITY CNT10 IS
+  PORT (CLK,RST,EN : IN STD_LOGIC;
+        CQ : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+END CNT10;
+ARCHITECTURE behav OF CNT10 IS
+  BEGIN
+    PROCESS(CLK,RST,EN)
+      VARIABLE CQI : STD_LOGIC_VECTOR(3 DOWNTO 0);
+    BEGIN
+      IF RSt = ‘1’ THEN CQI := (OtHERS =&gt;’0’); –计数器异步复位
+      ELSIF CLKEVENT AND CLK-‘1’ THEN          –检测时钟上升沿
+        IF EN = ‘1’ THEN                       –检测是否允许计数（同步使能）
+          IF CQI &lt; 9 THEN CQI := CQI + 1;      –允许计数，检测是否小于9
+            ELSE CQI := (OTHERS =&gt; ‘0’);       –大于9，计数值清零
+          END IF;
+        END IF;
+      END IF;
+      IF CQI = 9 THEN COUT &lt;= ‘1’;             –计数大于9，输出进位信号
+        ELSE COUT &lt;= ‘0’;
+      END IF;
+          CQ &lt;= CQI;                           –将计数值向端口输出
+    END PROCESS;
+  END behav;</p>
+
+<p>```</p>
+
+<h1 id="section-3">实验三： 3线-8线译码器</h1>
+
+<p>文件名<code>DEC38.vhd</code></p>
+
+<p>```sql
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+ENTITY DEC38
+PORT(a,b,c,g1,g2a,g2b: IN STD_LOGIC;
+                    y: OUT STD_LOGIC_VECTOR(7 DOWNTO 0));
+END ENTITY  DEC38;
+ARCHITECTURE rt1 OF DEC38 IS
+SIGNAL indata:STD_LOGICVECTOR(2 DOWNTO 0);
+BEGIN
+  indata &lt;= c &amp; b &amp; a;
+  PROCESS(indata,g1,g2a,g2b) IS
+  BEGIN
+    IF(g1=’1’ and g2a=’0’ and g2b=’0’) THEN
+      CASE indata IS
+        WHEN “000”=&gt;y&lt;=”11111110”;
+        WHEN “001”=&gt;y&lt;=”11111101”;
+        WHEN “010”=&gt;y&lt;=”11111011”;
+        WHEN “011”=&gt;y&lt;=”11110111”;
+        WHEN “100”=&gt;y&lt;=”11101111”;
+        WHEN “101”=&gt;y&lt;=”11011111”;
+        WHEN “110”=&gt;y&lt;=”10111111”;
+        WHEN “111”=&gt;y&lt;=”01111111”;
+        WHEN OTHERS=&gt;y&lt;=”XXXXXXXX”;
+      END CASE;
+    ELSE
+      y&lt;=”11111111”;
+    END IF;
+  END PROCESS;
+END ARCHITECTURE rt1;</p>
+
+<p>```</p>
+
+<p><img src="/images/old-pc.jpg" alt="" /></p>
+
+  </article>
+
+  
+
+
+<div class="post-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="/MATERIAL/2016/11/20/EDA-exp" data-title="EDA实验资料" data-url="http://imtim12138.github.io/MATERIAL/2016/11/20/EDA-exp.html"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"imtim12138"};
+      (function() {
+      	var ds = document.createElement('script');
+      	ds.type = 'text/javascript';ds.async = true;
+      	ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      	ds.charset = 'UTF-8';
+      	(document.getElementsByTagName('head')[0]
+      	 || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+
+        </div>
+        <div class="col-second">
+          <div class="col-box col-box-author">
+  <img class="avatar" src="/images/susu.png" alt="圆餠君">
+  <div class="col-box-title name">圆餠君</div>
+  <p>一只学电的程序餠子.</p>
+  <p class="contact">
+    
+    <a href="https://github.com/imtim12138">GitHub</a>
+    
+    
+    <a href="https://weibo.com/toycc2h">微博</a>
+    
+    
+    <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=4YmLjZWIjKGQkM_Cjow">Email</a>
+    
+  </p>
+</div>
+
+<div class="col-box">
+  <div class="col-box-title">最近</div>
+  <ul class="post-list">
+    
+      <li><a class="post-link" href="/MATERIAL/2016/11/20/EDA-exp.html">EDA实验资料</a></li>
+    
+      <li><a class="post-link" href="/Spit-slot/2016/09/13/god-be-thanked.html">吃LF的亏上**的当最后陷入疯狂-吐槽短期内经历Programme四大悲之二</a></li>
+    
+      <li><a class="post-link" href="/ENVIRONMENT/2016/06/04/mingw-error.html">MinGW-gcc/g++编译error：CreateProcess: No such file or directory</a></li>
+    
+      <li><a class="post-link" href="/MCU/2016/04/01/i-o-peripheral-md.html">读MCU实现各种姿势的I/O和外设访问
+程序-笔记</a></li>
+    
+      <li><a class="post-link" href="/tools/2016/03/21/ruijie.html">配置锐捷校园网</a></li>
+    
+  </ul>
+</div>
+
+<div class="col-box post-toc hide">
+  <div class="col-box-title">目录</div>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+<div class="wrapper">
+&copy; 2016 圆餠君
+</div>
+</footer>
+
+<script src="/js/easybook.js"></script>
+
+
+  </body>
+
+</html>

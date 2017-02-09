@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="baidu-site-verification" content="NmSsZqiwBD" />
+
+  <title>MinGW-gcc/g++编译error：CreateProcess: No such file or directory « 君子如兰</title>
+  <meta name="description" content="希望不要再重复搜索同一教程。">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://imtim12138.github.io/ENVIRONMENT/2016/06/04/mingw-error.html">
+  <link rel="alternate" type="application/rss+xml" title="君子如兰" href="http://imtim12138.github.io/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="header">
+  <div class="wrapper">
+    <a class="site-title" href="/">君子如兰</a>
+    <nav class="site-nav">
+      
+        
+      
+        
+        <a class="page-link" href="/about/">关于</a>
+        
+      
+        
+        <a class="page-link" href="/category/">分类</a>
+        
+      
+        
+      
+        
+        <a class="page-link" href="/editor/">撰写</a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="col-main">
+          <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">MinGW-gcc/g++编译error：CreateProcess: No such file or directory</h1>
+    <p class="post-meta">Jun 4, 2016</p>
+  </header>
+
+  <article class="post-content">
+    <p>mingw编译时遇到标题所示错误，有可能你遇到的是跟我一样的问题。</p>
+
+<p>浏览MinGW-WinAPI帮助时，不小心运行了命令 <code>mingw-get update &amp;&amp; mingw-get upgrade</code> 然后
+也没注意输出，gcc 也能用。第二天发现用g++编译文件时输出<code>g++: error: CreateProcess: No such file or directory</code>
+刚开始以为是安装什么新工具导致环境变量冲突了，可是检查发现也没问题，没有gcc/g++文件名冲突。</p>
+
+<p>意识到有可能是之前检查更新命令没运行成功。一顿搜，引起 <code>g++: error: CreateProcess: No such file or directory</code> 的可能是执行<code>mingw-get update &amp;&amp; mingw-get upgrade</code>时更新的解压安装包下载错误（据说经常是下载不完整）导致。</p>
+
+<p>搜到说先执行：</p>
+
+<p><code>mingw-get remove mingw32-gcc-g++ &amp;&amp; mingw-get remove mingw32-gcc</code></p>
+
+<p>然后直接尝试重新安装：</p>
+
+<p><code>mingw-get update &amp;&amp; mingw-get installmingw32-gcc-g++</code>
+<code>mingw-get rupdate &amp;&amp; mingw-get installmingw32-gcc</code></p>
+
+<p>重现更新下载完安装时的错误输出，发现了我是第3行这个文件解压时报错：</p>
+
+<p><code>
+Checking catalogue: mingw-developer-toolkit.xml; (item 111 of 112)              
+Checking catalogue: msys-system-builder.xml; (item 112 of 112)                  
+install: gcc-c++-4.9.3-1-mingw32-bin.tar.xz                                     
+ installing gcc-c++-4.9.3-1-mingw32-bin.tar.xz                                  
+mingw-get: *** ERROR *** D:\MinGW\/libexec/gcc/mingw32/4.9.3/cc1plus.exe: extrac
+tion failed                                                                     
+mingw-get: *** ERROR *** unexpected end of archive reading content record       
+mingw-get: *** ERROR *** unexpected end of archive reading header record        
+install: gcc-c++-4.8.1-4-mingw32-dev.tar.lzma                                   
+ installing gcc-c++-4.8.1-4-mingw32-dev.tar.lzma                                
+install: gcc-c++-4.8.1-4-mingw32-doc.tar.lzma                                   
+</code></p>
+
+<p>找到源头就好办了，解除掉gcc和g++的错误安装，然后找到下载的临时文件<code>gcc-c++-4.9.3-1-mingw32-bin.tar.xz</code>
+在MinGW目录下<code>D:\MinGW\var\cache\mingw-get\packages</code></p>
+
+<p>删除之。</p>
+
+<p>重新运行更新 update，下载之前出错的 gcc、g++安装包…
+迫不及待ing…应该已经恢复了吧？！</p>
+
+<p><code>g++ hellow.cpp</code></p>
+
+<p>“没有消息是最好的消息T^T”</p>
+
+  </article>
+
+  
+
+
+<div class="post-comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="/ENVIRONMENT/2016/06/04/mingw-error" data-title="MinGW-gcc/g++编译error：CreateProcess: No such file or directory" data-url="http://imtim12138.github.io/ENVIRONMENT/2016/06/04/mingw-error.html"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"imtim12138"};
+      (function() {
+      	var ds = document.createElement('script');
+      	ds.type = 'text/javascript';ds.async = true;
+      	ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      	ds.charset = 'UTF-8';
+      	(document.getElementsByTagName('head')[0]
+      	 || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+
+        </div>
+        <div class="col-second">
+          <div class="col-box col-box-author">
+  <img class="avatar" src="/images/susu.png" alt="圆餠君">
+  <div class="col-box-title name">圆餠君</div>
+  <p>一只学电的程序餠子.</p>
+  <p class="contact">
+    
+    <a href="https://github.com/imtim12138">GitHub</a>
+    
+    
+    <a href="https://weibo.com/toycc2h">微博</a>
+    
+    
+    <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=4YmLjZWIjKGQkM_Cjow">Email</a>
+    
+  </p>
+</div>
+
+<div class="col-box">
+  <div class="col-box-title">最近</div>
+  <ul class="post-list">
+    
+      <li><a class="post-link" href="/MATERIAL/2016/11/20/EDA-exp.html">EDA实验资料</a></li>
+    
+      <li><a class="post-link" href="/Spit-slot/2016/09/13/god-be-thanked.html">吃LF的亏上**的当最后陷入疯狂-吐槽短期内经历Programme四大悲之二</a></li>
+    
+      <li><a class="post-link" href="/ENVIRONMENT/2016/06/04/mingw-error.html">MinGW-gcc/g++编译error：CreateProcess: No such file or directory</a></li>
+    
+      <li><a class="post-link" href="/MCU/2016/04/01/i-o-peripheral-md.html">读MCU实现各种姿势的I/O和外设访问
+程序-笔记</a></li>
+    
+      <li><a class="post-link" href="/tools/2016/03/21/ruijie.html">配置锐捷校园网</a></li>
+    
+  </ul>
+</div>
+
+<div class="col-box post-toc hide">
+  <div class="col-box-title">目录</div>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+<div class="wrapper">
+&copy; 2016 圆餠君
+</div>
+</footer>
+
+<script src="/js/easybook.js"></script>
+
+
+  </body>
+
+</html>
